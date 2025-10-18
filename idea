@@ -1,0 +1,12 @@
+from fastapi import FastAPI
+from pydantic import BaseModel
+
+app = FastAPI(title="MBTQ Ecosystem API")
+
+class Idea(BaseModel):
+    name: str
+    description: str
+
+@app.post("/generate")
+async def generate_idea(idea: Idea):
+    return {"message": f"Idea '{idea.name}' registered successfully."}
