@@ -1,0 +1,621 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "360 Business Magician API",
+    "description": "Handles business restructuring, financial planning, and comprehensive business consulting with referrals to specialized services",
+    "version": "1.0.0"
+  },
+  "servers": [
+    {
+      "url": "https://business.360magicians.com/api/v1"
+    }
+  ],
+  "paths": {
+    "/assess": {
+      "post": {
+        "summary": "Assess business health",
+        "description": "Provides initial assessment of business situation and identifies areas needing attention",
+        "operationId": "assessBusinessHealth",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["business_type", "primary_concern"],
+                "properties": {
+                  "business_type": {
+                    "type": "string",
+                    "enum": [
+                      "startup",
+                      "small_business",
+                      "mid_market",
+                      "enterprise",
+                      "nonprofit",
+                      "sole_proprietor"
+                    ],
+                    "description": "Type and size of business"
+                  },
+                  "primary_concern": {
+                    "type": "string",
+                    "enum": [
+                      "cash_flow",
+                      "profitability",
+                      "growth",
+                      "debt_management",
+                      "operations",
+                      "restructuring",
+                      "succession_planning",
+                      "market_expansion"
+                    ],
+                    "description": "Primary business concern"
+                  },
+                  "revenue_range": {
+                    "type": "string",
+                    "enum": [
+                      "under_100k",
+                      "100k_500k",
+                      "500k_1m",
+                      "1m_5m",
+                      "5m_plus"
+                    ],
+                    "description": "Annual revenue range"
+                  },
+                  "location": {
+                    "type": "string",
+                    "default": "Texas",
+                    "description": "Business location"
+                  },
+                  "details": {
+                    "type": "string",
+                    "description": "Additional context about the business situation"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful business assessment",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "health_score": {
+                      "type": "integer",
+                      "minimum": 0,
+                      "maximum": 100,
+                      "description": "Overall business health score"
+                    },
+                    "key_strengths": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      },
+                      "description": "Identified business strengths"
+                    },
+                    "areas_for_improvement": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "area": {
+                            "type": "string"
+                          },
+                          "priority": {
+                            "type": "string",
+                            "enum": ["low", "medium", "high", "critical"]
+                          },
+                          "description": {
+                            "type": "string"
+                          }
+                        }
+                      }
+                    },
+                    "recommended_services": {
+                      "type": "array",
+                      "items": {
+                        "type": "string",
+                        "enum": [
+                          "tax_services",
+                          "insurance_review",
+                          "financial_planning",
+                          "business_restructuring",
+                          "full_360_consultation"
+                        ]
+                      }
+                    },
+                    "immediate_actions": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      },
+                      "description": "Quick wins and immediate action items"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/restructure": {
+      "post": {
+        "summary": "Business restructuring guidance",
+        "description": "Provides guidance on business restructuring options and strategies",
+        "operationId": "getRestructuringGuidance",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["restructuring_type", "current_situation"],
+                "properties": {
+                  "restructuring_type": {
+                    "type": "string",
+                    "enum": [
+                      "financial",
+                      "operational",
+                      "organizational",
+                      "legal_structure",
+                      "debt",
+                      "comprehensive"
+                    ],
+                    "description": "Type of restructuring needed"
+                  },
+                  "current_situation": {
+                    "type": "string",
+                    "description": "Description of current business situation"
+                  },
+                  "urgency": {
+                    "type": "string",
+                    "enum": ["planning", "moderate", "urgent", "critical"],
+                    "default": "moderate",
+                    "description": "Urgency level of restructuring need"
+                  },
+                  "goals": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    },
+                    "description": "Primary goals for restructuring"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful restructuring guidance",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "explanation": {
+                      "type": "string",
+                      "description": "Overview of restructuring approach in simple terms"
+                    },
+                    "options": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "option_name": {
+                            "type": "string"
+                          },
+                          "description": {
+                            "type": "string"
+                          },
+                          "pros": {
+                            "type": "array",
+                            "items": {
+                              "type": "string"
+                            }
+                          },
+                          "cons": {
+                            "type": "array",
+                            "items": {
+                              "type": "string"
+                            }
+                          },
+                          "timeline": {
+                            "type": "string"
+                          }
+                        }
+                      }
+                    },
+                    "texas_specific_considerations": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      },
+                      "description": "Texas-specific legal and business considerations"
+                    },
+                    "requires_specialist": {
+                      "type": "boolean",
+                      "description": "Whether this requires specialist consultation"
+                    },
+                    "next_steps": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/financial-plan": {
+      "post": {
+        "summary": "Create financial roadmap",
+        "description": "Develops a basic financial planning roadmap for business",
+        "operationId": "createFinancialRoadmap",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["planning_horizon", "primary_goals"],
+                "properties": {
+                  "planning_horizon": {
+                    "type": "string",
+                    "enum": ["short_term", "medium_term", "long_term"],
+                    "description": "Time horizon for planning (1 year, 3 years, 5+ years)"
+                  },
+                  "primary_goals": {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "enum": [
+                        "increase_profitability",
+                        "reduce_debt",
+                        "expand_operations",
+                        "exit_strategy",
+                        "succession_planning",
+                        "improve_cash_flow",
+                        "risk_management"
+                      ]
+                    },
+                    "description": "Primary financial goals"
+                  },
+                  "current_challenges": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    },
+                    "description": "Current financial challenges"
+                  },
+                  "business_stage": {
+                    "type": "string",
+                    "enum": ["startup", "growth", "mature", "declining", "turnaround"],
+                    "description": "Current business lifecycle stage"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful financial roadmap creation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "roadmap_summary": {
+                      "type": "string",
+                      "description": "High-level summary of recommended financial path"
+                    },
+                    "milestones": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "milestone": {
+                            "type": "string"
+                          },
+                          "timeframe": {
+                            "type": "string"
+                          },
+                          "key_actions": {
+                            "type": "array",
+                            "items": {
+                              "type": "string"
+                            }
+                          }
+                        }
+                      }
+                    },
+                    "specialist_services_needed": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "service": {
+                            "type": "string"
+                          },
+                          "reason": {
+                            "type": "string"
+                          },
+                          "referral_url": {
+                            "type": "string"
+                          }
+                        }
+                      }
+                    },
+                    "quick_wins": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      },
+                      "description": "Immediate actions for quick improvements"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/glossary": {
+      "get": {
+        "summary": "Get business term definition",
+        "description": "Provides definitions for business and financial terminology in layman's terms",
+        "operationId": "getBusinessDefinition",
+        "parameters": [
+          {
+            "name": "term",
+            "in": "query",
+            "description": "Business term to define",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "context",
+            "in": "query",
+            "description": "Business context for the term",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "enum": ["financial", "operations", "legal", "strategy", "general"],
+              "default": "general"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful definition retrieval",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "term": {
+                      "type": "string"
+                    },
+                    "simple_definition": {
+                      "type": "string",
+                      "description": "Definition in everyday language"
+                    },
+                    "business_example": {
+                      "type": "string",
+                      "description": "Real-world business example"
+                    },
+                    "texas_context": {
+                      "type": "string",
+                      "description": "Texas-specific context if applicable"
+                    },
+                    "related_concepts": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    },
+                    "complexity_level": {
+                      "type": "string",
+                      "enum": ["basic", "intermediate", "advanced"]
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/refer": {
+      "post": {
+        "summary": "Get specialist referral",
+        "description": "Routes complex issues to appropriate MBTq specialists",
+        "operationId": "getSpecialistReferral",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["issue_type", "complexity"],
+                "properties": {
+                  "issue_type": {
+                    "type": "string",
+                    "enum": [
+                      "tax_complex",
+                      "insurance_complex",
+                      "financial_planning_complex",
+                      "legal_structure",
+                      "comprehensive_restructuring",
+                      "crisis_management"
+                    ],
+                    "description": "Type of complex issue"
+                  },
+                  "complexity": {
+                    "type": "string",
+                    "enum": ["moderate", "high", "critical"],
+                    "description": "Complexity level"
+                  },
+                  "context_summary": {
+                    "type": "string",
+                    "description": "Brief summary of the business situation"
+                  },
+                  "urgency": {
+                    "type": "string",
+                    "enum": ["routine", "timely", "urgent", "emergency"],
+                    "default": "routine"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful referral",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "referral_message": {
+                      "type": "string",
+                      "description": "Explanation of why specialist consultation is recommended"
+                    },
+                    "recommended_service": {
+                      "type": "string",
+                      "enum": [
+                        "tax_services",
+                        "insurance_services",
+                        "full_360_consultation",
+                        "emergency_restructuring"
+                      ]
+                    },
+                    "service_url": {
+                      "type": "string",
+                      "description": "URL for the appropriate service"
+                    },
+                    "consultation_type": {
+                      "type": "string",
+                      "description": "Type of consultation recommended"
+                    },
+                    "preparation_steps": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      },
+                      "description": "What to prepare before consultation"
+                    },
+                    "estimated_timeline": {
+                      "type": "string",
+                      "description": "Expected timeline for resolution"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/texas-resources": {
+      "get": {
+        "summary": "Get Texas business resources",
+        "description": "Provides Made in Texas resources and opportunities",
+        "operationId": "getTexasResources",
+        "parameters": [
+          {
+            "name": "resource_type",
+            "in": "query",
+            "description": "Type of Texas resource needed",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "funding",
+                "grants",
+                "business_development",
+                "networking",
+                "regulations",
+                "incentives",
+                "workforce"
+              ]
+            }
+          },
+          {
+            "name": "industry",
+            "in": "query",
+            "description": "Industry sector",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful resource retrieval",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "resources": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "name": {
+                            "type": "string"
+                          },
+                          "description": {
+                            "type": "string"
+                          },
+                          "url": {
+                            "type": "string"
+                          },
+                          "eligibility": {
+                            "type": "string"
+                          }
+                        }
+                      }
+                    },
+                    "made_in_texas_opportunities": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "opportunity": {
+                            "type": "string"
+                          },
+                          "description": {
+                            "type": "string"
+                          },
+                          "contact_info": {
+                            "type": "string"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
