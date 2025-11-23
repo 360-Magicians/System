@@ -1,0 +1,823 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "Job Magician API",
+    "description": "Handles job search, career guidance, resume assistance, and connections to Texas employment opportunities",
+    "version": "1.0.0"
+  },
+  "servers": [
+    {
+      "url": "https://jobmagician.mbtquniverse.com/api"
+    }
+  ],
+  "paths": {
+    "/career-assess": {
+      "post": {
+        "summary": "Assess career situation",
+        "description": "Provides initial career assessment and identifies job search strategy",
+        "operationId": "assessCareerSituation",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["current_status", "goals"],
+                "properties": {
+                  "current_status": {
+                    "type": "string",
+                    "enum": [
+                      "employed_searching",
+                      "unemployed",
+                      "recent_graduate",
+                      "career_change",
+                      "returning_workforce",
+                      "underemployed"
+                    ],
+                    "description": "Current employment status"
+                  },
+                  "goals": {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "enum": [
+                        "find_job_quickly",
+                        "career_advancement",
+                        "industry_change",
+                        "higher_salary",
+                        "better_work_life_balance",
+                        "skill_development",
+                        "entrepreneurship"
+                      ]
+                    },
+                    "description": "Career goals"
+                  },
+                  "experience_level": {
+                    "type": "string",
+                    "enum": ["entry_level", "mid_level", "senior_level", "executive"],
+                    "description": "Professional experience level"
+                  },
+                  "industry": {
+                    "type": "string",
+                    "description": "Current or target industry"
+                  },
+                  "location_preference": {
+                    "type": "string",
+                    "default": "Texas",
+                    "description": "Preferred job location"
+                  },
+                  "skills": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    },
+                    "description": "Key skills and competencies"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful career assessment",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "assessment_summary": {
+                      "type": "string",
+                      "description": "Overview of career situation"
+                    },
+                    "strengths": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      },
+                      "description": "Key professional strengths"
+                    },
+                    "skill_gaps": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "skill": {
+                            "type": "string"
+                          },
+                          "importance": {
+                            "type": "string",
+                            "enum": ["nice_to_have", "recommended", "critical"]
+                          },
+                          "learning_resources": {
+                            "type": "array",
+                            "items": {
+                              "type": "string"
+                            }
+                          }
+                        }
+                      }
+                    },
+                    "recommended_strategy": {
+                      "type": "string",
+                      "description": "Recommended job search strategy"
+                    },
+                    "texas_opportunities": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      },
+                      "description": "Texas-specific job market insights"
+                    },
+                    "next_steps": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/resume-review": {
+      "post": {
+        "summary": "Review and improve resume",
+        "description": "Provides feedback and suggestions for resume improvement",
+        "operationId": "reviewResume",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["resume_text", "target_role"],
+                "properties": {
+                  "resume_text": {
+                    "type": "string",
+                    "description": "Current resume content"
+                  },
+                  "target_role": {
+                    "type": "string",
+                    "description": "Target job role or title"
+                  },
+                  "target_industry": {
+                    "type": "string",
+                    "description": "Target industry"
+                  },
+                  "review_focus": {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "enum": [
+                        "ats_optimization",
+                        "content_clarity",
+                        "achievement_highlighting",
+                        "keyword_optimization",
+                        "formatting",
+                        "overall"
+                      ]
+                    },
+                    "default": ["overall"]
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful resume review",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "overall_score": {
+                      "type": "integer",
+                      "minimum": 0,
+                      "maximum": 100,
+                      "description": "Overall resume effectiveness score"
+                    },
+                    "strengths": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    },
+                    "improvements": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "section": {
+                            "type": "string"
+                          },
+                          "issue": {
+                            "type": "string"
+                          },
+                          "suggestion": {
+                            "type": "string"
+                          },
+                          "priority": {
+                            "type": "string",
+                            "enum": ["low", "medium", "high"]
+                          }
+                        }
+                      }
+                    },
+                    "ats_compatibility": {
+                      "type": "object",
+                      "properties": {
+                        "score": {
+                          "type": "integer"
+                        },
+                        "issues": {
+                          "type": "array",
+                          "items": {
+                            "type": "string"
+                          }
+                        }
+                      }
+                    },
+                    "keyword_analysis": {
+                      "type": "object",
+                      "properties": {
+                        "missing_keywords": {
+                          "type": "array",
+                          "items": {
+                            "type": "string"
+                          }
+                        },
+                        "keyword_density": {
+                          "type": "string"
+                        }
+                      }
+                    },
+                    "example_improvements": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "before": {
+                            "type": "string"
+                          },
+                          "after": {
+                            "type": "string"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/job-match": {
+      "post": {
+        "summary": "Match jobs to candidate profile",
+        "description": "Finds suitable job opportunities based on skills and preferences",
+        "operationId": "matchJobs",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["skills", "preferences"],
+                "properties": {
+                  "skills": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    },
+                    "description": "Candidate skills"
+                  },
+                  "experience_years": {
+                    "type": "integer",
+                    "description": "Years of professional experience"
+                  },
+                  "preferences": {
+                    "type": "object",
+                    "properties": {
+                      "location": {
+                        "type": "array",
+                        "items": {
+                          "type": "string"
+                        },
+                        "default": ["Texas"]
+                      },
+                      "remote_preference": {
+                        "type": "string",
+                        "enum": ["onsite_only", "hybrid", "remote_only", "flexible"]
+                      },
+                      "salary_range": {
+                        "type": "object",
+                        "properties": {
+                          "min": {
+                            "type": "number"
+                          },
+                          "max": {
+                            "type": "number"
+                          }
+                        }
+                      },
+                      "industry": {
+                        "type": "array",
+                        "items": {
+                          "type": "string"
+                        }
+                      },
+                      "company_size": {
+                        "type": "array",
+                        "items": {
+                          "type": "string",
+                          "enum": ["startup", "small", "medium", "large", "enterprise"]
+                        }
+                      }
+                    }
+                  },
+                  "priorities": {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "enum": [
+                        "salary",
+                        "growth_opportunity",
+                        "work_life_balance",
+                        "company_culture",
+                        "job_security",
+                        "benefits",
+                        "commute"
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful job matching",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "matched_jobs": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "job_title": {
+                            "type": "string"
+                          },
+                          "company": {
+                            "type": "string"
+                          },
+                          "location": {
+                            "type": "string"
+                          },
+                          "match_score": {
+                            "type": "integer",
+                            "minimum": 0,
+                            "maximum": 100
+                          },
+                          "match_reasons": {
+                            "type": "array",
+                            "items": {
+                              "type": "string"
+                            }
+                          },
+                          "texas_business": {
+                            "type": "boolean",
+                            "description": "Whether this is a Made in Texas opportunity"
+                          },
+                          "job_url": {
+                            "type": "string"
+                          }
+                        }
+                      }
+                    },
+                    "texas_priority_matches": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "company": {
+                            "type": "string"
+                          },
+                          "opportunity": {
+                            "type": "string"
+                          },
+                          "why_featured": {
+                            "type": "string"
+                          }
+                        }
+                      }
+                    },
+                    "suggestions": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      },
+                      "description": "Suggestions to improve job matches"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/interview-prep": {
+      "post": {
+        "summary": "Interview preparation guidance",
+        "description": "Provides interview preparation tips and practice questions",
+        "operationId": "prepareInterview",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["job_role", "company_type"],
+                "properties": {
+                  "job_role": {
+                    "type": "string",
+                    "description": "Role interviewing for"
+                  },
+                  "company_type": {
+                    "type": "string",
+                    "description": "Type of company"
+                  },
+                  "interview_type": {
+                    "type": "string",
+                    "enum": [
+                      "phone_screening",
+                      "behavioral",
+                      "technical",
+                      "panel",
+                      "case_study",
+                      "final_round"
+                    ],
+                    "description": "Type of interview"
+                  },
+                  "areas_of_concern": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    },
+                    "description": "Specific areas candidate is concerned about"
+                  },
+                  "industry": {
+                    "type": "string",
+                    "description": "Industry sector"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful interview prep guidance",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "preparation_checklist": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    },
+                    "common_questions": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "question": {
+                            "type": "string"
+                          },
+                          "why_asked": {
+                            "type": "string"
+                          },
+                          "approach": {
+                            "type": "string"
+                          },
+                          "example_answer": {
+                            "type": "string"
+                          }
+                        }
+                      }
+                    },
+                    "star_method_examples": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "scenario": {
+                            "type": "string"
+                          },
+                          "star_breakdown": {
+                            "type": "object",
+                            "properties": {
+                              "situation": {
+                                "type": "string"
+                              },
+                              "task": {
+                                "type": "string"
+                              },
+                              "action": {
+                                "type": "string"
+                              },
+                              "result": {
+                                "type": "string"
+                              }
+                            }
+                          }
+                        }
+                      }
+                    },
+                    "questions_to_ask": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      },
+                      "description": "Smart questions to ask the interviewer"
+                    },
+                    "texas_business_insights": {
+                      "type": "string",
+                      "description": "Insights about Texas business culture if applicable"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/career-glossary": {
+      "get": {
+        "summary": "Get career term definition",
+        "description": "Provides definitions for career and job search terminology",
+        "operationId": "getCareerDefinition",
+        "parameters": [
+          {
+            "name": "term",
+            "in": "query",
+            "description": "Career term to define",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "context",
+            "in": "query",
+            "description": "Context for the term",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "enum": ["job_search", "resume", "interview", "workplace", "career_development"],
+              "default": "job_search"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful definition retrieval",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "term": {
+                      "type": "string"
+                    },
+                    "simple_definition": {
+                      "type": "string",
+                      "description": "Definition in everyday language"
+                    },
+                    "practical_example": {
+                      "type": "string",
+                      "description": "Practical example in job search context"
+                    },
+                    "why_it_matters": {
+                      "type": "string",
+                      "description": "Why this term is important in job search"
+                    },
+                    "related_terms": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/texas-opportunities": {
+      "get": {
+        "summary": "Get Texas-specific job opportunities",
+        "description": "Provides Made in Texas job opportunities and employment resources",
+        "operationId": "getTexasOpportunities",
+        "parameters": [
+          {
+            "name": "industry",
+            "in": "query",
+            "description": "Target industry",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "experience_level",
+            "in": "query",
+            "description": "Experience level",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "enum": ["entry_level", "mid_level", "senior_level", "executive"]
+            }
+          },
+          {
+            "name": "city",
+            "in": "query",
+            "description": "Texas city",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful opportunity retrieval",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "featured_opportunities": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "company": {
+                            "type": "string"
+                          },
+                          "positions": {
+                            "type": "array",
+                            "items": {
+                              "type": "string"
+                            }
+                          },
+                          "location": {
+                            "type": "string"
+                          },
+                          "why_made_in_texas": {
+                            "type": "string"
+                          },
+                          "apply_url": {
+                            "type": "string"
+                          }
+                        }
+                      }
+                    },
+                    "texas_job_market_insights": {
+                      "type": "object",
+                      "properties": {
+                        "growing_industries": {
+                          "type": "array",
+                          "items": {
+                            "type": "string"
+                          }
+                        },
+                        "in_demand_skills": {
+                          "type": "array",
+                          "items": {
+                            "type": "string"
+                          }
+                        },
+                        "salary_trends": {
+                          "type": "string"
+                        }
+                      }
+                    },
+                    "workforce_resources": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "resource_name": {
+                            "type": "string"
+                          },
+                          "description": {
+                            "type": "string"
+                          },
+                          "url": {
+                            "type": "string"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/refer": {
+      "post": {
+        "summary": "Get specialized career services referral",
+        "description": "Routes complex career situations to specialized MBTq services",
+        "operationId": "getCareerReferral",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["referral_type", "situation"],
+                "properties": {
+                  "referral_type": {
+                    "type": "string",
+                    "enum": [
+                      "career_coaching",
+                      "executive_search",
+                      "business_opportunity",
+                      "entrepreneurship",
+                      "professional_development",
+                      "career_transition"
+                    ],
+                    "description": "Type of specialized service needed"
+                  },
+                  "situation": {
+                    "type": "string",
+                    "description": "Description of career situation"
+                  },
+                  "urgency": {
+                    "type": "string",
+                    "enum": ["exploring", "actively_searching", "urgent"],
+                    "default": "exploring"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful referral",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "referral_message": {
+                      "type": "string",
+                      "description": "Explanation of recommended service"
+                    },
+                    "service_url": {
+                      "type": "string",
+                      "description": "URL for specialized service"
+                    },
+                    "what_to_expect": {
+                      "type": "string",
+                      "description": "What to expect from the specialized service"
+                    },
+                    "preparation_tips": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

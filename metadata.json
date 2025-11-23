@@ -1,0 +1,5 @@
+{
+  "name": "magicians system",
+  "description": "An interactive visualization of the Deaf First Magicians System, showcasing the core components, AI agents, and data flows.",
+  "requestFramePermissions": []
+}

@@ -1,0 +1,137 @@
+openapi: 3.0.0
+info:
+  title: DeafFirst API
+  version: 1.0.0
+  description: API for sign language processing and gesture recognition
+servers:
+  - url: https://deaffirst.pinksync.io/api/v1
+    description: Production server
+security:
+  - BearerAuth: []
+  - ApiKeyAuth: []
+components:
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+    ApiKeyAuth:
+      type: apiKey
+      in: header
+      name: X-API-Key
+  schemas:
+    GestureEvent:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        gesture_type:
+          type: string
+          enum: [sign_language, finger_spelling, facial_expression]
+        confidence_score:
+          type: number
+          format: float
+        timestamp:
+          type: string
+          format: date-time
+        metadata:
+          type: object
+        processed_data:
+          type: object
+    Recognition:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        source_type:
+          type: string
+          enum: [video, sensor_data, image]
+        recognition_result:
+          type: object
+        confidence_threshold:
+          type: number
+        processing_time:
+          type: number
+paths:
+  /gestures:
+    post:
+      summary: Process real-time gesture input
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GestureEvent'
+      responses:
+        '200':
+          description: Gesture processed successfully
+  /gestures/stream:
+    post:
+      summary: Stream real-time gesture data
+      requestBody:
+        required: true
+        content:
+          application/octet-stream:
+            schema:
+              type: string
+              format: binary
+      responses:
+        '200':
+          description: Stream processed successfully
+  /recognition:
+    post:
+      summary: Perform sign language recognition
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                video:
+                  type: string
+                  format: binary
+      responses:
+        '200':
+          description: Recognition results
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Recognition'
+  /models:
+    get:
+      summary: List available recognition models
+      responses:
+        '200':
+          description: List of models
+  /models/{id}/train:
+    post:
+      summary: Train model with new data
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Training initiated
+  /feedback:
+    post:
+      summary: Submit recognition feedback
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+      responses:
+        '201':
+          description: Feedback recorded
+  /metrics:
+    get:
+      summary: Get recognition metrics
+      responses:
+        '200':
+          description: System metrics

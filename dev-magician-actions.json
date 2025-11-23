@@ -1,0 +1,1075 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "Developer Magician API",
+    "description": "AI-powered development assistant for scaffolding, code generation, GitHub Actions, OpenAPI design, and modern development workflows",
+    "version": "1.0.0"
+  },
+  "servers": [
+    {
+      "url": "https://developer.360magicians.com/api"
+    }
+  ],
+  "paths": {
+    "/scaffold": {
+      "post": {
+        "summary": "Generate project scaffold",
+        "description": "Creates complete project structure with 90% of boilerplate code",
+        "operationId": "generateScaffold",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["project_type", "tech_stack"],
+                "properties": {
+                  "project_type": {
+                    "type": "string",
+                    "enum": [
+                      "web_app",
+                      "api",
+                      "mobile_app",
+                      "desktop_app",
+                      "cli_tool",
+                      "library",
+                      "microservice",
+                      "fullstack",
+                      "chrome_extension",
+                      "serverless"
+                    ],
+                    "description": "Type of project to scaffold"
+                  },
+                  "tech_stack": {
+                    "type": "object",
+                    "properties": {
+                      "frontend": {
+                        "type": "string",
+                        "enum": ["react", "vue", "svelte", "angular", "nextjs", "html", "none"]
+                      },
+                      "backend": {
+                        "type": "string",
+                        "enum": ["node", "python", "go", "rust", "java", "php", "ruby", "none"]
+                      },
+                      "database": {
+                        "type": "string",
+                        "enum": ["postgresql", "mysql", "mongodb", "redis", "sqlite", "firebase", "supabase", "none"]
+                      },
+                      "hosting": {
+                        "type": "string",
+                        "enum": ["vercel", "netlify", "aws", "gcp", "azure", "heroku", "digitalocean", "self_hosted"]
+                      }
+                    }
+                  },
+                  "features": {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "enum": [
+                        "authentication",
+                        "database_orm",
+                        "api_endpoints",
+                        "file_upload",
+                        "email_service",
+                        "payment_processing",
+                        "admin_dashboard",
+                        "testing_setup",
+                        "docker",
+                        "ci_cd",
+                        "logging",
+                        "monitoring"
+                      ]
+                    },
+                    "description": "Features to include in scaffold"
+                  },
+                  "ai_assistance_level": {
+                    "type": "string",
+                    "enum": ["minimal", "standard", "maximum"],
+                    "default": "maximum",
+                    "description": "How much AI-generated code to include (targeting 90% completion)"
+                  },
+                  "include_examples": {
+                    "type": "boolean",
+                    "default": true,
+                    "description": "Include working example implementations"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successfully generated scaffold",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "project_structure": {
+                      "type": "object",
+                      "description": "Complete file and folder structure"
+                    },
+                    "generated_files": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "path": {
+                            "type": "string"
+                          },
+                          "content": {
+                            "type": "string"
+                          },
+                          "description": {
+                            "type": "string"
+                          }
+                        }
+                      }
+                    },
+                    "completion_percentage": {
+                      "type": "integer",
+                      "description": "Percentage of project completed by scaffold"
+                    },
+                    "next_steps": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      },
+                      "description": "Remaining 10% developer needs to implement"
+                    },
+                    "setup_commands": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      },
+                      "description": "Commands to run for initial setup"
+                    },
+                    "github_repo_config": {
+                      "type": "object",
+                      "properties": {
+                        "readme": {
+                          "type": "string"
+                        },
+                        "gitignore": {
+                          "type": "string"
+                        },
+                        "license": {
+                          "type": "string"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/github-actions": {
+      "post": {
+        "summary": "Generate GitHub Actions workflow",
+        "description": "Creates complete CI/CD pipeline configurations",
+        "operationId": "generateGitHubActions",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["workflow_type", "tech_stack"],
+                "properties": {
+                  "workflow_type": {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "enum": [
+                        "ci",
+                        "cd",
+                        "testing",
+                        "linting",
+                        "security_scan",
+                        "dependency_update",
+                        "release",
+                        "docker_build",
+                        "deployment",
+                        "performance_test",
+                        "api_test"
+                      ]
+                    },
+                    "description": "Types of workflows to generate"
+                  },
+                  "tech_stack": {
+                    "type": "object",
+                    "properties": {
+                      "language": {
+                        "type": "string"
+                      },
+                      "framework": {
+                        "type": "string"
+                      },
+                      "package_manager": {
+                        "type": "string",
+                        "enum": ["npm", "yarn", "pnpm", "pip", "poetry", "cargo", "maven", "gradle"]
+                      }
+                    }
+                  },
+                  "deployment_target": {
+                    "type": "string",
+                    "enum": ["vercel", "netlify", "aws", "gcp", "azure", "heroku", "digitalocean", "kubernetes", "custom"],
+                    "description": "Where to deploy"
+                  },
+                  "triggers": {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "enum": ["push", "pull_request", "schedule", "release", "manual", "tag"]
+                    },
+                    "default": ["push", "pull_request"]
+                  },
+                  "environments": {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "enum": ["development", "staging", "production"]
+                    },
+                    "default": ["staging", "production"]
+                  },
+                  "include_secrets_template": {
+                    "type": "boolean",
+                    "default": true,
+                    "description": "Include template for required secrets"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successfully generated GitHub Actions workflows",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "workflows": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "name": {
+                            "type": "string"
+                          },
+                          "file_path": {
+                            "type": "string"
+                          },
+                          "content": {
+                            "type": "string"
+                          },
+                          "description": {
+                            "type": "string"
+                          }
+                        }
+                      }
+                    },
+                    "secrets_required": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "name": {
+                            "type": "string"
+                          },
+                          "description": {
+                            "type": "string"
+                          },
+                          "how_to_obtain": {
+                            "type": "string"
+                          }
+                        }
+                      }
+                    },
+                    "setup_instructions": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    },
+                    "best_practices": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/openapi-design": {
+      "post": {
+        "summary": "Generate OpenAPI specification",
+        "description": "Creates complete OpenAPI spec with endpoints, schemas, and examples",
+        "operationId": "generateOpenAPI",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["api_purpose", "resources"],
+                "properties": {
+                  "api_purpose": {
+                    "type": "string",
+                    "description": "What the API does"
+                  },
+                  "resources": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "name": {
+                          "type": "string"
+                        },
+                        "description": {
+                          "type": "string"
+                        },
+                        "operations": {
+                          "type": "array",
+                          "items": {
+                            "type": "string",
+                            "enum": ["create", "read", "update", "delete", "list", "search", "custom"]
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "authentication": {
+                    "type": "string",
+                    "enum": ["none", "api_key", "bearer_token", "oauth2", "basic_auth"],
+                    "default": "bearer_token"
+                  },
+                  "version": {
+                    "type": "string",
+                    "default": "1.0.0"
+                  },
+                  "include_examples": {
+                    "type": "boolean",
+                    "default": true
+                  },
+                  "generate_client_code": {
+                    "type": "boolean",
+                    "default": false,
+                    "description": "Also generate client SDK code"
+                  },
+                  "target_languages": {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "enum": ["javascript", "python", "go", "rust", "java", "php", "ruby"]
+                    },
+                    "description": "Languages for client code generation"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successfully generated OpenAPI specification",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "openapi_spec": {
+                      "type": "object",
+                      "description": "Complete OpenAPI 3.1.0 specification"
+                    },
+                    "swagger_ui_url": {
+                      "type": "string",
+                      "description": "URL to view in Swagger UI"
+                    },
+                    "client_sdks": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "language": {
+                            "type": "string"
+                          },
+                          "code": {
+                            "type": "string"
+                          },
+                          "usage_example": {
+                            "type": "string"
+                          }
+                        }
+                      }
+                    },
+                    "implementation_guide": {
+                      "type": "string",
+                      "description": "Guide for implementing the API"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/code-generator": {
+      "post": {
+        "summary": "Generate specific code components",
+        "description": "AI-generates specific components, functions, or modules",
+        "operationId": "generateCode",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["component_type", "description"],
+                "properties": {
+                  "component_type": {
+                    "type": "string",
+                    "enum": [
+                      "api_endpoint",
+                      "database_model",
+                      "react_component",
+                      "service_class",
+                      "utility_function",
+                      "test_suite",
+                      "middleware",
+                      "authentication_system",
+                      "crud_operations",
+                      "form_handler",
+                      "state_management",
+                      "websocket_handler"
+                    ]
+                  },
+                  "description": {
+                    "type": "string",
+                    "description": "What the component should do"
+                  },
+                  "language": {
+                    "type": "string",
+                    "description": "Programming language"
+                  },
+                  "framework": {
+                    "type": "string",
+                    "description": "Framework being used"
+                  },
+                  "requirements": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    },
+                    "description": "Specific requirements or constraints"
+                  },
+                  "include_tests": {
+                    "type": "boolean",
+                    "default": true
+                  },
+                  "include_documentation": {
+                    "type": "boolean",
+                    "default": true
+                  },
+                  "code_style": {
+                    "type": "string",
+                    "enum": ["minimal", "verbose", "production_ready"],
+                    "default": "production_ready"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successfully generated code",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "code": {
+                      "type": "string",
+                      "description": "Generated code"
+                    },
+                    "tests": {
+                      "type": "string",
+                      "description": "Generated test code"
+                    },
+                    "documentation": {
+                      "type": "string",
+                      "description": "Inline and external documentation"
+                    },
+                    "dependencies": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      },
+                      "description": "Required packages/libraries"
+                    },
+                    "usage_example": {
+                      "type": "string",
+                      "description": "Example of how to use the generated code"
+                    },
+                    "integration_notes": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      },
+                      "description": "Notes on integrating into existing project"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/architecture": {
+      "post": {
+        "summary": "Design system architecture",
+        "description": "Generates complete system architecture with AI recommendations",
+        "operationId": "designArchitecture",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["project_description", "scale"],
+                "properties": {
+                  "project_description": {
+                    "type": "string",
+                    "description": "What you're building"
+                  },
+                  "scale": {
+                    "type": "string",
+                    "enum": ["small", "medium", "large", "enterprise"],
+                    "description": "Expected scale of the project"
+                  },
+                  "priorities": {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "enum": [
+                        "performance",
+                        "scalability",
+                        "maintainability",
+                        "cost_efficiency",
+                        "developer_experience",
+                        "security",
+                        "reliability"
+                      ]
+                    }
+                  },
+                  "constraints": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    },
+                    "description": "Any technical or business constraints"
+                  },
+                  "existing_systems": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    },
+                    "description": "Systems that need to integrate with"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successfully designed architecture",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "architecture_diagram": {
+                      "type": "string",
+                      "description": "ASCII or mermaid diagram of architecture"
+                    },
+                    "tech_stack_recommendations": {
+                      "type": "object",
+                      "properties": {
+                        "frontend": {
+                          "type": "object",
+                          "properties": {
+                            "recommended": {
+                              "type": "string"
+                            },
+                            "reasoning": {
+                              "type": "string"
+                            },
+                            "alternatives": {
+                              "type": "array",
+                              "items": {
+                                "type": "string"
+                              }
+                            }
+                          }
+                        },
+                        "backend": {
+                          "type": "object"
+                        },
+                        "database": {
+                          "type": "object"
+                        },
+                        "infrastructure": {
+                          "type": "object"
+                        }
+                      }
+                    },
+                    "design_patterns": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "pattern": {
+                            "type": "string"
+                          },
+                          "where_to_use": {
+                            "type": "string"
+                          },
+                          "why": {
+                            "type": "string"
+                          }
+                        }
+                      }
+                    },
+                    "implementation_phases": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "phase": {
+                            "type": "string"
+                          },
+                          "components": {
+                            "type": "array",
+                            "items": {
+                              "type": "string"
+                            }
+                          },
+                          "estimated_effort": {
+                            "type": "string"
+                          }
+                        }
+                      }
+                    },
+                    "ci_cd_strategy": {
+                      "type": "string",
+                      "description": "Recommended CI/CD approach"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/learning-path": {
+      "post": {
+        "summary": "Get personalized learning path",
+        "description": "Educational guidance on different ways of building software",
+        "operationId": "getLearningPath",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["current_level", "goal"],
+                "properties": {
+                  "current_level": {
+                    "type": "string",
+                    "enum": ["beginner", "intermediate", "advanced", "expert"],
+                    "description": "Current skill level"
+                  },
+                  "goal": {
+                    "type": "string",
+                    "description": "What you want to learn or build"
+                  },
+                  "learning_style": {
+                    "type": "string",
+                    "enum": ["hands_on", "theory_first", "project_based", "tutorial_based"],
+                    "default": "project_based"
+                  },
+                  "time_commitment": {
+                    "type": "string",
+                    "enum": ["few_hours_week", "part_time", "full_time", "intensive"]
+                  },
+                  "focus_areas": {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "enum": [
+                        "frontend",
+                        "backend",
+                        "fullstack",
+                        "mobile",
+                        "devops",
+                        "data_engineering",
+                        "ai_ml",
+                        "security",
+                        "architecture"
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successfully generated learning path",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "learning_roadmap": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "phase": {
+                            "type": "string"
+                          },
+                          "topics": {
+                            "type": "array",
+                            "items": {
+                              "type": "string"
+                            }
+                          },
+                          "projects": {
+                            "type": "array",
+                            "items": {
+                              "type": "string"
+                            }
+                          },
+                          "duration": {
+                            "type": "string"
+                          }
+                        }
+                      }
+                    },
+                    "different_approaches": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "approach": {
+                            "type": "string"
+                          },
+                          "pros": {
+                            "type": "array",
+                            "items": {
+                              "type": "string"
+                            }
+                          },
+                          "cons": {
+                            "type": "array",
+                            "items": {
+                              "type": "string"
+                            }
+                          },
+                          "when_to_use": {
+                            "type": "string"
+                          },
+                          "example_project": {
+                            "type": "string"
+                          }
+                        }
+                      },
+                      "description": "Different ways to approach building the same thing"
+                    },
+                    "resources": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "title": {
+                            "type": "string"
+                          },
+                          "type": {
+                            "type": "string",
+                            "enum": ["documentation", "tutorial", "course", "book", "video", "tool"]
+                          },
+                          "url": {
+                            "type": "string"
+                          },
+                          "level": {
+                            "type": "string"
+                          }
+                        }
+                      }
+                    },
+                    "ai_tools_to_use": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "tool": {
+                            "type": "string"
+                          },
+                          "use_case": {
+                            "type": "string"
+                          },
+                          "productivity_gain": {
+                            "type": "string"
+                          }
+                        }
+                      },
+                      "description": "AI tools to accelerate learning and development"
+                    },
+                    "milestones": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "milestone": {
+                            "type": "string"
+                          },
+                          "how_to_measure": {
+                            "type": "string"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/compare-approaches": {
+      "post": {
+        "summary": "Compare different development approaches",
+        "description": "Educational comparison of different ways to solve the same problem",
+        "operationId": "compareApproaches",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["problem", "approaches_to_compare"],
+                "properties": {
+                  "problem": {
+                    "type": "string",
+                    "description": "The development problem or feature to build"
+                  },
+                  "approaches_to_compare": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    },
+                    "description": "Specific approaches/technologies to compare"
+                  },
+                  "comparison_criteria": {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "enum": [
+                        "development_speed",
+                        "performance",
+                        "scalability",
+                        "maintainability",
+                        "learning_curve",
+                        "cost",
+                        "community_support",
+                        "job_market"
+                      ]
+                    },
+                    "default": ["development_speed", "performance", "maintainability"]
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successfully compared approaches",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "comparison_table": {
+                      "type": "object",
+                      "description": "Side-by-side comparison"
+                    },
+                    "detailed_analysis": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "approach": {
+                            "type": "string"
+                          },
+                          "strengths": {
+                            "type": "array",
+                            "items": {
+                              "type": "string"
+                            }
+                          },
+                          "weaknesses": {
+                            "type": "array",
+                            "items": {
+                              "type": "string"
+                            }
+                          },
+                          "best_for": {
+                            "type": "string"
+                          },
+                          "example_companies": {
+                            "type": "array",
+                            "items": {
+                              "type": "string"
+                            }
+                          }
+                        }
+                      }
+                    },
+                    "recommendation": {
+                      "type": "object",
+                      "properties": {
+                        "suggested_approach": {
+                          "type": "string"
+                        },
+                        "reasoning": {
+                          "type": "string"
+                        },
+                        "when_to_reconsider": {
+                          "type": "string"
+                        }
+                      }
+                    },
+                    "implementation_examples": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "approach": {
+                            "type": "string"
+                          },
+                          "code_snippet": {
+                            "type": "string"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/ai-workflow": {
+      "post": {
+        "summary": "Design AI-powered development workflow",
+        "description": "Creates workflow where AI handles 90% of development tasks",
+        "operationId": "designAIWorkflow",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["project_type", "team_size"],
+                "properties": {
+                  "project_type": {
+                    "type": "string",
+                    "description": "Type of project"
+                  },
+                  "team_size": {
+                    "type": "string",
+                    "enum": ["solo", "small_team", "medium_team", "large_team"]
+                  },
+                  "automation_level": {
+                    "type": "string",
+                    "enum": ["conservative", "balanced", "aggressive"],
+                    "default": "aggressive",
+                    "description": "How much to automate with AI"
+                  },
+                  "human_expertise_areas": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    },
+                    "description": "Areas where human input is critical"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successfully designed AI workflow",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "workflow_diagram": {
+                      "type": "string",
+                      "description": "Visual representation of workflow"
+                    },
+                    "ai_tasks": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "task": {
+                            "type": "string"
+                          },
+                          "ai_tool": {
+                            "type": "string"
+                          },
+                          "automation_percentage": {
+                            "type": "integer"
+                          },
+                          "setup_guide": {
+                            "type": "string"
+                          }
+                        }
+                      },
+                      "description": "Tasks AI will handle (targeting 90%)"
+                    },
+                    "human_tasks": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "task": {
+                            "type": "string"
+                          },
+                          "why_human": {
+                            "type": "string"
+                          
