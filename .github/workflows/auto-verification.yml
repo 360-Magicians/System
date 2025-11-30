@@ -31,7 +31,7 @@ jobs:
 
       - name: Install quality tools
         run: |
-          pip install pylint radon bandit vulture
+          pip install pylint==3.0.0 radon==6.0.1 bandit==1.7.7 vulture==2.11
 
       - name: Run pylint
         run: |

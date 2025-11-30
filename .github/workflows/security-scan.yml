@@ -34,14 +34,24 @@ jobs:
       - name: Run safety check
         run: |
           if [ -f requirements.txt ]; then
-            safety check -r requirements.txt --output json || true
+            safety check -r requirements.txt --output json > safety-report.json
+            if [ $? -ne 0 ]; then
+              echo "::warning::Security vulnerabilities found in dependencies"
+              cat safety-report.json
+            fi
           fi
+        continue-on-error: true
 
       - name: Run pip-audit
         run: |
           if [ -f requirements.txt ]; then
-            pip-audit -r requirements.txt || true
+            pip-audit -r requirements.txt --desc --output json > audit-report.json
+            if [ $? -ne 0 ]; then
+              echo "::warning::Vulnerabilities found during pip-audit"
+              cat audit-report.json
+            fi
           fi
+        continue-on-error: true
 
   codeql:
     name: CodeQL Analysis

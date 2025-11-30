@@ -159,5 +159,6 @@ automation:
     enabled: true
     dependency_updates:
       schedule: weekly
-      auto_merge: true
+      auto_merge: false  # Disabled for security - requires manual review
       security_only: false
+      require_review: true

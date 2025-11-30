@@ -148,19 +148,23 @@ class TestDependabotConfiguration:
 class TestAggregatorAPI:
     """Tests for the Aggregator FastAPI application"""
     
+    @pytest.fixture(autouse=True)
+    def setup_app(self):
+        """Import the aggregator app once for all tests"""
+        from aggregator import app
+        self.app = app
+    
     def test_aggregator_file_exists(self):
         """Verify aggregator.py exists"""
         assert Path("aggregator.py").exists(), "aggregator.py should exist"
     
     def test_aggregator_imports_correctly(self):
         """Verify aggregator can be imported"""
-        from aggregator import app
-        assert app is not None, "FastAPI app should be importable"
+        assert self.app is not None, "FastAPI app should be importable"
     
     def test_aggregator_has_docs_endpoint(self):
         """Verify aggregator has /docs/aggregate endpoint"""
-        from aggregator import app
-        routes = [route.path for route in app.routes]
+        routes = [route.path for route in self.app.routes]
         assert "/docs/aggregate" in routes, "Aggregator should have /docs/aggregate endpoint"
 
 
