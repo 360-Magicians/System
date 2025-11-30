@@ -1,0 +1,212 @@
+# 360 Magicians System - n8n Integration Configuration
+# This file defines n8n workflow automation templates
+
+version: "1.0"
+name: "360-Magicians-n8n-Workflows"
+description: "n8n workflow automation configurations for AI integrations"
+
+# Environment Configuration
+environment:
+  base_url: "${N8N_BASE_URL:-http://localhost:5678}"
+  api_key: "${N8N_API_KEY}"
+  webhook_base: "${N8N_WEBHOOK_BASE:-http://localhost:5678/webhook}"
+
+# Workflow Templates
+workflows:
+  # AI Code Review Workflow
+  ai-code-review:
+    name: "AI-Powered Code Review"
+    description: "Automated code review using AI agents"
+    trigger:
+      type: webhook
+      path: "/github/pull-request"
+    nodes:
+      - id: github_trigger
+        type: n8n-nodes-base.webhookTrigger
+        position: [100, 200]
+        parameters:
+          httpMethod: POST
+          path: github-pr-webhook
+          
+      - id: fetch_pr_details
+        type: n8n-nodes-base.httpRequest
+        position: [300, 200]
+        parameters:
+          url: "https://api.github.com/repos/360-Magicians/{{$json.repository}}/pulls/{{$json.pull_request.number}}"
+          authentication: predefinedCredentialType
+          nodeCredentialType: githubApi
+          
+      - id: ai_analysis
+        type: "@n8n/n8n-nodes-langchain.agent"
+        position: [500, 200]
+        parameters:
+          agent: conversationalAgent
+          promptType: define
+          text: |
+            Review this pull request code change:
+            {{$json.diff}}
+            
+            Provide feedback on:
+            1. Code quality
+            2. Potential bugs
+            3. Security concerns
+            4. Accessibility (Deaf First principles)
+            5. Suggestions for improvement
+            
+      - id: post_comment
+        type: n8n-nodes-base.github
+        position: [700, 200]
+        parameters:
+          operation: createComment
+          owner: "360-Magicians"
+          repository: "={{$json.repository}}"
+          issueNumber: "={{$json.pull_request.number}}"
+          body: "={{$node.ai_analysis.json.output}}"
+
+  # Issue Triage Workflow
+  issue-triage:
+    name: "Automated Issue Triage"
+    description: "AI-powered issue classification and routing"
+    trigger:
+      type: webhook
+      path: "/github/issue"
+    nodes:
+      - id: issue_trigger
+        type: n8n-nodes-base.webhookTrigger
+        position: [100, 200]
+        
+      - id: classify_issue
+        type: "@n8n/n8n-nodes-langchain.agent"
+        position: [300, 200]
+        parameters:
+          agent: conversationalAgent
+          promptType: define
+          text: |
+            Classify this GitHub issue:
+            Title: {{$json.issue.title}}
+            Body: {{$json.issue.body}}
+            
+            Categories:
+            - bug: Software defects
+            - enhancement: New features
+            - documentation: Docs improvements
+            - accessibility: Deaf First/a11y issues
+            - security: Security concerns
+            - question: User questions
+            
+            Respond with JSON:
+            {
+              "category": "category_name",
+              "priority": "low|medium|high",
+              "labels": ["label1", "label2"],
+              "suggested_assignee": "team_or_person"
+            }
+            
+      - id: apply_labels
+        type: n8n-nodes-base.github
+        position: [500, 200]
+        parameters:
+          operation: addLabels
+          owner: "360-Magicians"
+          repository: "={{$json.repository.name}}"
+          issueNumber: "={{$json.issue.number}}"
+          labels: "={{JSON.parse($node.classify_issue.json.output).labels}}"
+
+  # Deployment Pipeline Workflow
+  deployment-pipeline:
+    name: "Automated Deployment Pipeline"
+    description: "CI/CD deployment automation"
+    trigger:
+      type: webhook
+      path: "/github/push"
+    nodes:
+      - id: push_trigger
+        type: n8n-nodes-base.webhookTrigger
+        position: [100, 200]
+        
+      - id: check_branch
+        type: n8n-nodes-base.if
+        position: [300, 200]
+        parameters:
+          conditions:
+            string:
+              - value1: "={{$json.ref}}"
+                operation: contains
+                value2: "main"
+                
+      - id: run_tests
+        type: n8n-nodes-base.httpRequest
+        position: [500, 200]
+        parameters:
+          url: "https://api.github.com/repos/360-Magicians/{{$json.repository.name}}/actions/workflows/auto-test.yml/dispatches"
+          method: POST
+          authentication: predefinedCredentialType
+          nodeCredentialType: githubApi
+          body:
+            ref: "={{$json.ref}}"
+            
+      - id: notify_team
+        type: n8n-nodes-base.slack
+        position: [700, 200]
+        parameters:
+          channel: "#deployments"
+          text: "🚀 Deployment triggered for {{$json.repository.name}}"
+
+  # Documentation Sync Workflow
+  docs-sync:
+    name: "Documentation Synchronization"
+    description: "Sync documentation across platforms"
+    trigger:
+      type: schedule
+      cron: "0 0 * * *"
+    nodes:
+      - id: schedule_trigger
+        type: n8n-nodes-base.scheduleTrigger
+        position: [100, 200]
+        parameters:
+          rule:
+            interval:
+              - field: cronExpression
+                expression: "0 0 * * *"
+                
+      - id: fetch_readme
+        type: n8n-nodes-base.github
+        position: [300, 200]
+        parameters:
+          operation: getRepositoryContent
+          owner: "360-Magicians"
+          repository: "System"
+          filePath: "README.md"
+          
+      - id: convert_with_markitdown
+        type: n8n-nodes-base.httpRequest
+        position: [500, 200]
+        parameters:
+          url: "{{$env.MARKITDOWN_API_URL}}/convert"
+          method: POST
+          body:
+            content: "={{$json.content}}"
+            format: "html"
+
+# Webhook Configuration
+webhooks:
+  github:
+    events:
+      - pull_request
+      - issues
+      - push
+      - release
+    secret: "${GITHUB_WEBHOOK_SECRET}"
+    
+# Credentials (reference only - configure in n8n)
+credentials:
+  - name: github
+    type: githubApi
+    scopes:
+      - repo
+      - workflow
+      - admin:org
+  - name: slack
+    type: slackApi
+  - name: openai
+    type: openAiApi

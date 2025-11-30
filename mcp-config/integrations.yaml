@@ -1,0 +1,163 @@
+# 360 Magicians System - MCP Server Integrations Configuration
+# This file defines the AI integrations with MCP (Model Context Protocol) servers
+
+version: "1.0"
+name: "360-Magicians-MCP-Integration"
+description: "Configuration for connecting AI agents to MCP servers"
+
+integrations:
+  # n8n Workflow Automation Integration
+  n8n:
+    enabled: true
+    description: "n8n workflow automation for AI-driven orchestration"
+    capabilities:
+      - workflow_execution
+      - webhook_triggers
+      - api_integrations
+      - scheduled_tasks
+    config:
+      base_url: "${N8N_BASE_URL:-http://localhost:5678}"
+      api_key_env: "N8N_API_KEY"
+    workflows:
+      - name: "ai-code-review"
+        trigger: "pull_request"
+        actions:
+          - validate_code
+          - run_tests
+          - security_scan
+      - name: "auto-deployment"
+        trigger: "push_to_main"
+        actions:
+          - build
+          - test
+          - deploy
+      - name: "issue-triage"
+        trigger: "issue_created"
+        actions:
+          - classify_issue
+          - assign_labels
+          - notify_team
+
+  # GitHub MCP Server Integration
+  github:
+    enabled: true
+    description: "GitHub operations for repository management"
+    capabilities:
+      - repository_management
+      - issue_tracking
+      - pull_request_handling
+      - code_search
+      - actions_management
+    config:
+      token_env: "GITHUB_TOKEN"
+      organization: "360-Magicians"
+    automation:
+      - auto_merge_dependabot: true
+      - auto_label_issues: true
+      - auto_assign_reviewers: true
+      - stale_issue_management: true
+
+  # Context7 Documentation Integration
+  context7:
+    enabled: true
+    description: "Context7 for documentation and context retrieval"
+    capabilities:
+      - documentation_search
+      - context_retrieval
+      - knowledge_base_access
+      - api_documentation
+    config:
+      api_key_env: "CONTEXT7_API_KEY"
+    features:
+      - semantic_search
+      - code_documentation
+      - api_reference_lookup
+
+  # Playwright Browser Automation Integration
+  playwright:
+    enabled: true
+    description: "Playwright for browser automation and testing"
+    capabilities:
+      - browser_automation
+      - ui_testing
+      - screenshot_capture
+      - accessibility_testing
+    config:
+      headless: true
+      browsers:
+        - chromium
+        - firefox
+        - webkit
+    test_types:
+      - end_to_end
+      - visual_regression
+      - accessibility
+      - performance
+
+  # MarkItDown Document Processing Integration
+  markitdown:
+    enabled: true
+    description: "MarkItDown for document parsing and conversion"
+    capabilities:
+      - document_conversion
+      - markdown_parsing
+      - content_extraction
+      - format_transformation
+    supported_formats:
+      - pdf
+      - docx
+      - html
+      - markdown
+      - plain_text
+
+# Automation Settings
+automation:
+  auto_test:
+    enabled: true
+    triggers:
+      - pull_request
+      - push
+    types:
+      - unit_tests
+      - integration_tests
+      - e2e_tests
+
+  auto_devops:
+    enabled: true
+    pipeline_stages:
+      - lint
+      - build
+      - test
+      - security_scan
+      - deploy
+
+  auto_security:
+    enabled: true
+    scans:
+      - dependency_check
+      - code_scanning
+      - secret_detection
+      - vulnerability_assessment
+
+  auto_verification:
+    enabled: true
+    checks:
+      - code_quality
+      - test_coverage
+      - documentation
+      - accessibility
+
+  auto_support:
+    enabled: true
+    features:
+      - issue_classification
+      - auto_response
+      - escalation_routing
+      - knowledge_base_search
+
+  auto_updates:
+    enabled: true
+    dependency_updates:
+      schedule: weekly
+      auto_merge: true
+      security_only: false

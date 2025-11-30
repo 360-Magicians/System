@@ -1,0 +1,134 @@
+# 360 Magicians System - Playwright MCP Integration
+# Browser automation and testing configuration
+
+version: "1.0"
+name: "360-Magicians-Playwright-Config"
+description: "Playwright browser automation configuration for testing and UI verification"
+
+# Browser Configuration
+browsers:
+  chromium:
+    enabled: true
+    headless: true
+    args:
+      - "--no-sandbox"
+      - "--disable-setuid-sandbox"
+      - "--disable-dev-shm-usage"
+      
+  firefox:
+    enabled: true
+    headless: true
+    
+  webkit:
+    enabled: true
+    headless: true
+
+# Test Configuration
+testing:
+  # Accessibility Testing
+  accessibility:
+    enabled: true
+    standards:
+      - WCAG2A
+      - WCAG2AA
+      - Section508
+    checks:
+      - color_contrast
+      - keyboard_navigation
+      - screen_reader_compatibility
+      - focus_visible
+      - alt_text
+      - form_labels
+      
+  # Visual Regression Testing
+  visual_regression:
+    enabled: true
+    threshold: 0.1
+    screenshot_dir: "tests/screenshots"
+    
+  # End-to-End Testing
+  e2e:
+    enabled: true
+    base_url: "${E2E_BASE_URL:-http://localhost:3000}"
+    timeout: 30000
+    retries: 2
+    
+  # Performance Testing
+  performance:
+    enabled: true
+    metrics:
+      - first_contentful_paint
+      - largest_contentful_paint
+      - time_to_interactive
+      - total_blocking_time
+
+# Page Objects for 360 Magicians System
+page_objects:
+  architecture_diagram:
+    url: "/"
+    selectors:
+      canvas: "#architecture-canvas"
+      nodes: ".architecture-node"
+      edges: ".architecture-edge"
+      search: "#component-search"
+      deaf_mode_toggle: "#deaf-mode-toggle"
+      
+  component_modal:
+    selectors:
+      modal: ".node-detail-modal"
+      title: ".modal-title"
+      description: ".modal-description"
+      close: ".modal-close"
+      
+  ai_summary:
+    selectors:
+      generate_button: "#generate-summary"
+      summary_output: ".ai-summary-content"
+      deploy_button: "#deploy-agents"
+      build_button: "#ready-to-build"
+
+# Automation Scenarios
+scenarios:
+  smoke_test:
+    description: "Basic functionality smoke test"
+    steps:
+      - navigate: "/"
+      - wait_for: "#architecture-canvas"
+      - screenshot: "homepage"
+      - click: ".architecture-node"
+      - wait_for: ".node-detail-modal"
+      - screenshot: "component-modal"
+      
+  deaf_mode_test:
+    description: "Test Deaf Mode toggle functionality"
+    steps:
+      - navigate: "/"
+      - click: "#deaf-mode-toggle"
+      - wait_for_text: "ASL GLOSS"
+      - screenshot: "deaf-mode-active"
+      - verify_accessibility: true
+      
+  ai_integration_test:
+    description: "Test AI summary generation"
+    steps:
+      - navigate: "/"
+      - click: "#generate-summary"
+      - wait_for: ".ai-summary-content"
+      - verify_not_empty: ".ai-summary-content"
+      - screenshot: "ai-summary"
+
+# Reporting
+reporting:
+  formats:
+    - html
+    - json
+    - junit
+  output_dir: "test-results"
+  screenshots_on_failure: true
+  video_on_failure: true
+
+# CI Integration
+ci:
+  parallel: 4
+  shards: 1
+  reporter: "github"
