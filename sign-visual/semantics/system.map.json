@@ -1,0 +1,103 @@
+{
+  "version": "1.0.0",
+  "description": "Maps system actions to sign language semantics",
+  "mappings": {
+    "MagicianCore:init": {
+      "signGloss": "SYSTEM START READY",
+      "semanticChunks": ["initialization", "ready-state"],
+      "visualPriority": "high"
+    },
+    "MagicianCore:processing": {
+      "signGloss": "THINK WORK NOW",
+      "semanticChunks": ["cognitive-activity", "active-processing"],
+      "visualPriority": "medium"
+    },
+    "Validator:checking": {
+      "signGloss": "CHECK EXAMINE CAREFUL",
+      "semanticChunks": ["validation", "scrutiny"],
+      "visualPriority": "high"
+    },
+    "Validator:approved": {
+      "signGloss": "GOOD APPROVE YES",
+      "semanticChunks": ["approval", "positive-result"],
+      "visualPriority": "high"
+    },
+    "Validator:rejected": {
+      "signGloss": "NO REJECT PROBLEM",
+      "semanticChunks": ["rejection", "negative-result"],
+      "visualPriority": "critical"
+    },
+    "Builder:creating": {
+      "signGloss": "BUILD CREATE MAKE",
+      "semanticChunks": ["construction", "generation"],
+      "visualPriority": "medium"
+    },
+    "Builder:completed": {
+      "signGloss": "FINISH DONE SUCCESS",
+      "semanticChunks": ["completion", "success"],
+      "visualPriority": "high"
+    },
+    "FibonRose:warning": {
+      "signGloss": "CAREFUL WARNING LOOK",
+      "semanticChunks": ["caution", "alert"],
+      "visualPriority": "critical"
+    },
+    "FibonRose:blocked": {
+      "signGloss": "STOP BLOCK CANNOT",
+      "semanticChunks": ["prohibition", "prevention"],
+      "visualPriority": "critical"
+    },
+    "DeafAuth:verifying": {
+      "signGloss": "CHECK IDENTITY WHO",
+      "semanticChunks": ["authentication", "verification"],
+      "visualPriority": "medium"
+    },
+    "DeafAuth:authenticated": {
+      "signGloss": "VERIFIED GOOD ENTER",
+      "semanticChunks": ["access-granted", "success"],
+      "visualPriority": "high"
+    },
+    "PinkSync:translating": {
+      "signGloss": "CHANGE LANGUAGE BRIDGE",
+      "semanticChunks": ["translation", "communication-facilitation"],
+      "visualPriority": "low"
+    },
+    "System:error": {
+      "signGloss": "ERROR PROBLEM BROKEN",
+      "semanticChunks": ["failure", "malfunction"],
+      "visualPriority": "critical"
+    },
+    "System:awaiting_input": {
+      "signGloss": "WAIT YOU NEED INPUT",
+      "semanticChunks": ["waiting", "user-action-required"],
+      "visualPriority": "high"
+    },
+    "System:retry": {
+      "signGloss": "TRY AGAIN ONCE-MORE",
+      "semanticChunks": ["retry", "repetition"],
+      "visualPriority": "medium"
+    }
+  },
+  "priorityLevels": {
+    "critical": {
+      "description": "Immediate attention required",
+      "visualStyle": "urgent",
+      "soundAlert": true
+    },
+    "high": {
+      "description": "Important system state change",
+      "visualStyle": "prominent",
+      "soundAlert": false
+    },
+    "medium": {
+      "description": "Normal operation",
+      "visualStyle": "standard",
+      "soundAlert": false
+    },
+    "low": {
+      "description": "Background activity",
+      "visualStyle": "subtle",
+      "soundAlert": false
+    }
+  }
+}

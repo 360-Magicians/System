@@ -1,0 +1,19 @@
+{
+  "state": "idle",
+  "description": "Agent is ready and waiting",
+  "signSemantics": {
+    "primary": "READY",
+    "secondary": "WAITING",
+    "visual": "Hands at rest, relaxed posture"
+  },
+  "transitions": [
+    "listening",
+    "processing"
+  ],
+  "requiresUser": false,
+  "visualCues": {
+    "color": "#666666",
+    "icon": "⏸️",
+    "animation": "none"
+  }
+}

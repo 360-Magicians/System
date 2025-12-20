@@ -1,0 +1,21 @@
+{
+  "state": "validating",
+  "description": "Agent is checking and confirming information",
+  "signSemantics": {
+    "primary": "CHECK",
+    "secondary": "VALIDATE",
+    "visual": "Hands forming checkmark, careful examination gesture"
+  },
+  "transitions": [
+    "deciding",
+    "processing",
+    "error",
+    "needs_input"
+  ],
+  "requiresUser": false,
+  "visualCues": {
+    "color": "#ff9d4e",
+    "icon": "✓",
+    "animation": "pulse"
+  }
+}
