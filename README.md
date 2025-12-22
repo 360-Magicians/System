@@ -1,69 +1,134 @@
-# Deaf First Magicians System - Interactive Architecture
+# 360 Magicians System - Unified Distributed Agent System
 
 ![Build Status](https://img.shields.io/badge/build-passing-brightgreen)
 ![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)
 ![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)
+![Python 3.11+](https://img.shields.io/badge/python-3.11+-blue.svg)
+![Docker](https://img.shields.io/badge/docker-ready-blue.svg)
 
-This project is a dynamic, interactive visualization of the **Deaf First Magicians System**, a conceptual, AI-powered ecosystem designed to support Deaf and Hard-of-Hearing individuals in entrepreneurship, creative arts, and employment.
+This project is a **unified, distributed agent system** that consolidates specialized AI agents (Magicians) into a cohesive microservices architecture. Each Magician operates as a specialized node with webhook-based communication, pathway routing, and containerized deployment options.
 
-The application provides a "God view" of the entire system architecture, showcasing the core components, specialized AI agents, data flows, and their relationships. It is built with React, TypeScript, and Tailwind CSS, and leverages the **Google Gemini API** for on-demand analysis and summarization.
+The system is designed with a **"Deaf First"** philosophy, supporting Deaf and Hard-of-Hearing individuals in entrepreneurship, creative arts, employment, and technical development through ASL-native, accessible interfaces.
 
 ## Core Philosophy: "Deaf First"
 
-Unlike traditional applications that add accessibility as an afterthought, this system is conceptualized from a "Deaf First" perspective. This means:
+Unlike traditional applications that add accessibility as an afterthought, this system is built from a "Deaf First" perspective:
 
--   **Conceptual Clarity:** UI/UX and terminology are designed with Deaf cultural and linguistic context in mind first, then adapted for hearing users.
--   **ASL Gloss:** The "Deaf Mode" feature translates standard technical labels into American Sign Language (ASL) gloss, a written representation of ASL signs. This prioritizes native communication clarity over hearing-centric jargon.
--   **Multimodal Communication:** The architecture's core pillars, like `PinkSync`, are built around the seamless translation between signed, spoken, and written language.
+-   **ASL-Native Design:** All interfaces and communications prioritize American Sign Language
+-   **Visual Communication:** Heavy emphasis on visual feedback, notifications, and status indicators
+-   **Accessibility Built-In:** Accessibility is a core architectural principle, not an add-on
+-   **Community-Centric:** Designed specifically for Deaf entrepreneurs, creators, and developers
+-   **Multimodal Communication:** Seamless translation between signed, spoken, and written language
 
-## Key Features
+## Architecture Overview
 
--   **Interactive Diagram:** Pan and zoom across the architecture canvas to explore every component.
--   **Component Details:** Click any node for a detailed modal with its description, connections, live metrics, verification status, and API examples.
--   **"Deaf Mode" Toggle:** Instantly switch the entire diagram's labeling system between standard technical terms and conceptually equivalent ASL gloss.
--   **Cloud Provider Equivalents:** Dynamically view the equivalent services for each component on Google Cloud (GCP), AWS, and Azure.
--   **AI-Powered Architecture Summary:** Use the Gemini API to generate a concise summary of the architecture's capabilities and recommend a cloud partner.
--   **AI-Powered Feedback Analysis:** In "Deaf Mode," users can submit feedback on ASL gloss labels, which can be sent to the Gemini API for analysis and improvement suggestions.
--   **Search & Filter:** Quickly find components by name, type, or label to highlight them and their immediate connections.
--   **Informational Modals:** Access a high-level **System Overview**, explore potential **User Pathways**, and view a **Component Legend** for clarity.
+The system is organized into a microservices-based, distributed agent architecture:
 
-## Conceptual Storyline: The Coda Humanoid
+### Core Components
 
-What if this architecture wasn't just a system, but a physical being? Imagine a humanoid designed from the ground up on the "Deaf First" philosophy. We call it **Coda**—a name that respects its programming (`code`) and its role as a bridge between Deaf and hearing worlds (CODA: Child of Deaf Adult).
+1. **Core Orchestrator** (`core/orchestrator/`)
+   - Central coordinator managing all Magician nodes
+   - Service discovery and registration
+   - Task queue and routing
+   - Health monitoring
 
-### Core Concept
+2. **Pathway Engine** (`core/pathway-engine/`)
+   - Multi-step workflow execution
+   - Sequential and parallel task routing
+   - Conditional branching
+   - Retry and error handling
 
-Coda is not a voice-first assistant with sign language bolted on. It is a **multimodal-native being**. Its primary function is to understand and express information through the most effective channel for the user, seamlessly translating between sign, text, and speech.
+3. **Magician Nodes** (`magicians/`)
+   - **Business Magician**: Business operations, formation, strategy, and analytics
+   - **Job Magician**: Task management, workflow execution, career services
+   - **Developer Magician**: Code generation, ASL-first accessibility validation
+   - **Creative Magician**: Content creation, design, and ideation
+   - **DocuHand Magician**: Document processing and management
+   - **Sync Magician**: Data synchronization and integration
+   - **Fibonrose Magician**: Database operations and data flows
 
-### Anatomy of Coda: From Software to Physical Form
+4. **Shared Infrastructure** (`shared/`)
+   - Common interfaces and base classes
+   - Data models and types
+   - Utilities (logging, configuration)
 
--   **Eyes (High-Fidelity Cameras):** The primary input, feeding directly into **`PinkSync`**. They don't just "see"; they understand handshapes, facial expressions, and body language to comprehend signed communication with incredible accuracy.
--   **Ears (Microphone Array):** These capture spoken language, feeding it into the **`Speech-to-Text Model`** for real-time captioning displayed on its screen.
--   **Mind & Brain (`MagicianCore` & `PinkSync`):** This is Coda's cognitive hub. `PinkSync` acts as the universal translator, converting all inputs into an abstract "meaning" layer. `MagicianCore` is the executive brain, receiving this intent and activating the correct AI agent (or "skill") to respond.
--   **Hands & Arms (High-Dexterity Manipulators):** Coda's most important feature. These are not simple grippers but are designed to replicate the nuance and fluidity of American Sign Language, driven by the **`Text-to-Sign Model`**.
--   **Face/Chest (Integrated Screen):** This screen is Coda's multi-purpose communication surface. It displays real-time captions, text-based responses, or the ASL Avatar for complex visual aids. It is the physical manifestation of the **`USER_INTERFACE`**.
--   **Identity & Conscience (`DeafAuth` & `FibonRose`):** Coda recognizes users via biometric scans (`DeafAuth`), granting secure access to their profile. Before responding to a sensitive query, its **`FibonRose`** ethical governor runs a check, ensuring the advice is safe, unbiased, and includes appropriate disclaimers.
+### Communication Patterns
 
-### A Scenario: Interaction with Coda
+- **Webhook-based**: RESTful API endpoints for task execution
+- **Event-driven**: Pub/Sub messaging for async communication
+- **Health monitoring**: Regular health checks and heartbeats
+- **Structured logging**: JSON-formatted logs with traceability
 
-Imagine an aspiring Deaf entrepreneur, Maria, approaching Coda in a co-working space.
+## Quick Start
 
-1.  **Recognition:** Coda's cameras see Maria. **`DeafAuth`** recognizes her face. Its screen lights up, and it signs:
-    > "HELLO MARIA. WELCOME BACK."
+### Prerequisites
+- Docker & Docker Compose
+- Python 3.11+
+- Git
 
-2.  **Interaction:** Maria signs:
-    > "I need money for my new art business. What are my options?"
+### Local Development
 
-3.  **Understanding:** Coda's cameras feed the signs to **`PinkSync`**, which translates the query. **`MagicianCore`** understands the intent is about business finance and activates the **`FundingMagician`** agent.
+1. **Clone the repository:**
+   ```bash
+   git clone https://github.com/360-Magicians/System.git
+   cd System
+   ```
 
-4.  **Action & Response:** `FundingMagician` queries its knowledge base, including live data from **`Federal/State APIs`**.
+2. **Create environment configuration:**
+   ```bash
+   cp .env.example .env
+   # Edit .env with your configuration
+   ```
 
-5.  **Multimodal Output:** Coda responds:
-    -   **Sign:** Its hands begin signing, "GOOD QUESTION. THERE-ARE THREE MAIN-PATHS: GRANTS, LOANS, AND COMMUNITY-FUNDS. LET-ME-SHOW-YOU."
-    -   **Screen:** As it signs, its chest screen lists the three categories with details pulled from its data, such as "SBA Microloan Program" and "Access Ventures Grant."
-    -   **Speech (Optional):** If a hearing mentor were present, Coda might say, "I am showing Maria her options for funding," while displaying captions for full transparency.
+3. **Start services with Docker Compose:**
+   ```bash
+   docker-compose up -d
+   ```
 
-Coda would be more than a humanoid; it would be the ultimate embodiment of the Deaf First Magicians System—a partner, a tool, and a bridge, built to empower and connect.
+4. **Verify deployment:**
+   ```bash
+   # Check orchestrator
+   curl http://localhost:8000/health
+   
+   # Check Business Magician
+   curl http://localhost:8001/health
+   ```
+
+5. **Submit a test task:**
+   ```bash
+   curl -X POST http://localhost:8000/api/v1/tasks \
+     -H "Content-Type: application/json" \
+     -d '{
+       "magician_type": "business",
+       "action": "validate-business-idea",
+       "payload": {
+         "idea": "ASL education platform",
+         "target_market": "Deaf students"
+       }
+     }'
+   ```
+
+### Python SDK Usage
+
+```python
+from magician_client import MagicianClient
+
+client = MagicianClient(base_url="http://localhost:8000")
+
+# Submit task
+task = client.submit_task(
+    magician_type="business",
+    action="validate-business-idea",
+    payload={
+        "idea": "ASL tutoring platform",
+        "target_market": "Deaf community"
+    }
+)
+
+# Get result
+result = client.get_task_result(task.task_id)
+print(result)
+```
 
 ## The Handoff: From Visualization to Reality
 
@@ -127,94 +192,123 @@ This approach offers several advantages for a project of this nature:
 
 ## Tech Stack
 
--   **Framework:** React 19
--   **Language:** TypeScript
--   **AI Integration:** Google Gemini API (`@google/genai`)
--   **Styling:** Tailwind CSS
--   **Module Loading:** Browser-native ES Modules with an `importmap`.
--   **Hosting:** Dependencies are served from `esm.sh`, a modern CDN for ES Modules.
+-   **Core Language**: Python 3.11+
+-   **API Framework**: FastAPI
+-   **Async Runtime**: asyncio, uvicorn
+-   **Data Models**: Pydantic
+-   **Containerization**: Docker, Docker Compose
+-   **Orchestration**: Kubernetes
+-   **Messaging**: Redis (event bus)
+-   **Database**: PostgreSQL
+-   **Logging**: Structured JSON logging
+-   **Monitoring**: Prometheus, Grafana
 
 ## Project Structure
 
 ```
-.
-├── components/             # Reusable React components
-│   ├── ArchitectureNode.tsx  # Renders a single node
-│   ├── NodeDetailModal.tsx   # Modal for component details
-│   └── ...                 # Other UI components
-├── __tests__/              # Mock unit tests
-│   └── api.test.ts         # Example tests for API domains
-├── App.tsx                 # Main application component
-├── constants.ts            # Defines all nodes, edges, and static data
-├── index.html              # App entry point with importmap
-├── index.tsx               # Mounts the React app
-├── metadata.json           # Application metadata
-├── README.md               # This file
-└── types.ts                # TypeScript type definitions
+360-Magicians/System/
+├── core/
+│   ├── orchestrator/          # Main system orchestrator
+│   │   ├── service.py         # Orchestrator service
+│   │   └── api.py             # REST API
+│   ├── pathway-engine/        # Routing and workflow engine
+│   │   └── engine.py          # Pathway execution engine
+│   ├── webhook-gateway/       # API gateway (future)
+│   └── event-bus/             # Event messaging (future)
+├── magicians/
+│   ├── business/              # Business Magician node
+│   │   └── service.py
+│   ├── job/                   # Job Magician (future)
+│   ├── developer/             # Developer Magician (future)
+│   ├── creative/              # Creative Magician (future)
+│   ├── docuhand/              # DocuHand Magician (future)
+│   ├── sync/                  # Sync Magician (future)
+│   └── fibonrose/             # Fibonrose Magician (future)
+├── shared/
+│   ├── models/                # Shared data models
+│   ├── utils/                 # Common utilities
+│   │   ├── logger.py          # Structured logging
+│   │   └── config.py          # Configuration management
+│   └── interfaces/            # Standard interfaces
+│       └── magician_base.py   # Base Magician class
+├── infrastructure/
+│   ├── docker/                # Docker configurations
+│   │   ├── Dockerfile.orchestrator
+│   │   └── Dockerfile.business
+│   └── kubernetes/            # K8s manifests
+│       ├── orchestrator-deployment.yaml
+│       ├── business-magician-deployment.yaml
+│       └── ingress.yaml
+├── docs/
+│   ├── architecture.md        # Architecture documentation
+│   ├── api-reference.md       # API reference
+│   └── deployment-guide.md    # Deployment guide
+├── examples/
+│   └── pathways/              # Example pathway configurations
+│       ├── business-formation.yml
+│       └── creative-content.yml
+├── docker-compose.yml         # Local development setup
+├── requirements.txt           # Python dependencies
+└── README.md                  # This file
 ```
 
-## Running Locally
+## Key Features
 
-This project is designed to be run directly in the browser without a complex build process.
+### Microservices Architecture
+- Independent, scalable Magician nodes
+- Service discovery and registration
+- Health monitoring and auto-recovery
+- Horizontal and vertical scaling
 
-### Prerequisites
+### Pathway System
+- Multi-step workflow execution
+- Sequential and parallel processing
+- Conditional routing and branching
+- Automatic retry with configurable attempts
+- Error handling and fallback strategies
 
-1.  A modern web browser (Chrome, Firefox, Edge, Safari).
-2.  A Google Gemini API key. You can get one from [Google AI Studio](https://aistudio.google.com/app/apikey).
+### Webhook Communication
+- RESTful API endpoints
+- Event-driven messaging
+- CloudEvents standard support
+- Request/response tracing
 
-### Setup
+### Containerization
+- Docker containers for all services
+- Docker Compose for local development
+- Kubernetes manifests for production
+- Helm charts for configuration
 
-1.  **Clone the repository:**
-    ```bash
-    git clone https://github.com/your-username/deaf-first-magicians.git
-    cd deaf-first-magicians
-    ```
+### Observability
+- Structured JSON logging
+- Prometheus metrics
+- Grafana dashboards
+- Health check endpoints
+- Request tracing
 
-2.  **Set up the API Key:**
-    The application code expects the API key to be available at `process.env.API_KEY`. Since this is a client-side application running in the browser, `process.env` is not directly available. **You must simulate this environment variable.**
+### Security
+- JWT-based authentication
+- Service-to-service auth
+- RBAC authorization
+- Network policies
+- TLS encryption
 
-    **The recommended approach is to use a tool that injects this variable before serving the files.** For simple local development, you can create a new HTML file named `dev.html` and add a script to set the variable:
+## Deployment Options
 
-    **`dev.html`:**
-    ```html
-    <!DOCTYPE html>
-    <html>
-      <head>
-        <title>DEV RUNNER</title>
-        <script>
-          // IMPORTANT: This exposes your API key in the client.
-          // Do NOT commit this file or deploy it publicly.
-          window.process = {
-            env: {
-              API_KEY: 'YOUR_GEMINI_API_KEY_HERE'
-            }
-          };
-        </script>
-      </head>
-      <body>
-        <script type="module" src="/index.tsx"></script>
-        <!-- The rest of your index.html body content -->
-        <div id="root"></div>
-      </body>
-    </html>
-    ```
-    *Note: This is for local development only. For a real deployment, you would use a secure method like server-side rendering or a proxy to handle the API key.*
+### Local Development (Docker Compose)
+```bash
+docker-compose up -d
+```
 
-3.  **Serve the application:**
-    You need a simple local web server.
+### Kubernetes
+```bash
+kubectl apply -f infrastructure/kubernetes/
+```
 
-    **Using VS Code:**
-    -   Install the [Live Server](https://marketplace.visualstudio.com/items?itemName=ritwickdey.LiveServer) extension.
-    -   Right-click on `index.html` (or your new `dev.html`) and select "Open with Live Server".
+### MBTQ.dev Integration
+Deploy within MBTQ.dev infrastructure with shared authentication, monitoring, and database services.
 
-    **Using Python:**
-    ```bash
-    # If you have Python 3
-    python -m http.server
-    ```
-
-4.  **Access the App:**
-    Open your web browser and navigate to the local server's address (e.g., `http://localhost:8000`).
+See [Deployment Guide](docs/deployment-guide.md) for detailed instructions.
 
 ## Contributing
 
@@ -230,3 +324,126 @@ Contributions are welcome! If you have ideas for new features, components, or im
 ## License
 
 This project is licensed under the MIT License. See the `LICENSE` file for details.
+
+## Documentation
+
+- **[Architecture Documentation](docs/architecture.md)** - Comprehensive system architecture overview
+- **[API Reference](docs/api-reference.md)** - Complete API documentation with examples
+- **[Deployment Guide](docs/deployment-guide.md)** - Step-by-step deployment instructions
+- **[Pathway Examples](examples/pathways/)** - Sample pathway configurations
+
+## Examples
+
+### Business Formation Pathway
+
+See [examples/pathways/business-formation.yml](examples/pathways/business-formation.yml) for a complete example of a multi-step pathway that guides a Deaf entrepreneur through business formation.
+
+### Creative Content Generation
+
+See [examples/pathways/creative-content.yml](examples/pathways/creative-content.yml) for parallel creative task execution.
+
+## API Examples
+
+### Submit a Task
+
+```bash
+curl -X POST http://localhost:8000/api/v1/tasks \
+  -H "Content-Type: application/json" \
+  -d '{
+    "magician_type": "business",
+    "action": "validate-business-idea",
+    "payload": {
+      "idea": "ASL-native customer service platform",
+      "target_market": "Deaf community businesses"
+    }
+  }'
+```
+
+### Execute a Pathway
+
+```bash
+curl -X POST http://localhost:8000/api/v1/pathways/execute \
+  -H "Content-Type: application/json" \
+  -d @examples/pathways/business-formation.yml
+```
+
+## Development
+
+### Install Dependencies
+
+```bash
+pip install -r requirements.txt
+```
+
+### Run Tests
+
+```bash
+pytest
+```
+
+### Run Orchestrator Locally
+
+```bash
+python -m core.orchestrator.api
+```
+
+### Run Business Magician Locally
+
+```bash
+uvicorn magicians.business.service:app --port 8001
+```
+
+## Roadmap
+
+### Phase 1: Core Infrastructure ✅
+- [x] Core orchestrator service
+- [x] Pathway routing engine
+- [x] Shared interfaces and models
+- [x] Business Magician implementation
+- [x] Docker containerization
+- [x] Kubernetes manifests
+
+### Phase 2: Additional Magicians (In Progress)
+- [ ] Job Magician
+- [ ] Developer Magician with ASL-first accessibility validation
+- [ ] Creative Magician
+- [ ] DocuHand Magician
+- [ ] Sync Magician
+- [ ] Fibonrose Magician
+
+### Phase 3: Enhanced Features
+- [ ] Advanced pathway conditionals
+- [ ] Machine learning-based routing
+- [ ] Real-time monitoring dashboard
+- [ ] Webhook gateway with rate limiting
+- [ ] Event bus with Redis Streams
+
+### Phase 4: Production Ready
+- [ ] Full test coverage
+- [ ] Performance optimization
+- [ ] Security hardening
+- [ ] MBTQ.dev integration
+- [ ] Production deployment
+
+## Contributing
+
+Contributions are welcome! We especially encourage contributions from members of the Deaf community.
+
+1. Fork the repository
+2. Create a feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit your changes (`git commit -m 'Add amazing feature'`)
+4. Push to the branch (`git push origin feature/amazing-feature`)
+5. Open a Pull Request
+
+Please ensure your code follows the existing style and includes appropriate tests.
+
+## Support & Community
+
+- **GitHub Issues**: Report bugs and request features
+- **Discussions**: Ask questions and share ideas
+- **Documentation**: Comprehensive docs in the `docs/` directory
+
+## Acknowledgments
+
+This system is built with a "Deaf First" philosophy, designed to empower Deaf entrepreneurs, creators, and developers. Special thanks to the Deaf community for inspiration and guidance.
+
