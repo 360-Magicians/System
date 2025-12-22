@@ -74,3 +74,8 @@ yarn-error.log*
 # Kubernetes
 kubeconfig
 *.kubeconfig
+
+# Vercel (explicitly excluded - this is a standalone system)
+.vercel
+vercel.json
+.vercelignore
