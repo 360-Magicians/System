@@ -1,0 +1,58 @@
+# Business Formation Pathway
+# This pathway guides a Deaf entrepreneur through the complete business formation process
+
+pathway:
+  pathway_id: "business-formation-001"
+  name: "business-formation-flow"
+  description: "Complete business formation workflow for Deaf entrepreneurs"
+  parallel: false
+  
+  steps:
+    - magician: "business"
+      action: "validate-business-idea"
+      retry_count: 2
+      timeout: 60
+      on_success: "create-business-plan"
+      on_failure: "notify-failure"
+      
+    - magician: "business"
+      action: "create-business-plan"
+      retry_count: 2
+      timeout: 120
+      on_success: "analyze-market"
+      
+    - magician: "business"
+      action: "analyze-market"
+      retry_count: 3
+      timeout: 90
+      on_success: "find-funding"
+      
+    - magician: "business"
+      action: "find-funding"
+      retry_count: 2
+      timeout: 60
+      on_success: "generate-branding"
+      
+    - magician: "creative"
+      action: "generate-branding"
+      retry_count: 2
+      timeout: 180
+      on_success: "create-website"
+      
+    - magician: "developer"
+      action: "create-website"
+      retry_count: 3
+      timeout: 300
+      on_success: "setup-hiring-pipeline"
+      
+    - magician: "job"
+      action: "setup-hiring-pipeline"
+      retry_count: 2
+      timeout: 120
+      on_success: "complete"
+
+  initial_payload:
+    user_id: "deaf-entrepreneur-123"
+    business_idea: "ASL-native customer service platform"
+    target_market: "Deaf community businesses"
+    asl_first: true

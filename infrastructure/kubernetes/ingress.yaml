@@ -1,0 +1,32 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: magician-system-ingress
+  annotations:
+    kubernetes.io/ingress.class: nginx
+    cert-manager.io/cluster-issuer: letsencrypt-prod
+    nginx.ingress.kubernetes.io/ssl-redirect: "true"
+    nginx.ingress.kubernetes.io/rate-limit: "100"
+spec:
+  tls:
+  - hosts:
+    - magician-system.mbtq.dev
+    secretName: magician-system-tls
+  rules:
+  - host: magician-system.mbtq.dev
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: orchestrator
+            port:
+              number: 8000
+      - path: /magicians/business
+        pathType: Prefix
+        backend:
+          service:
+            name: business-magician
+            port:
+              number: 8001
