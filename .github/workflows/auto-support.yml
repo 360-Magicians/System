@@ -1,0 +1,163 @@
+name: Auto Support & Issue Management
+
+on:
+  issues:
+    types: [opened, labeled]
+  issue_comment:
+    types: [created]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  issues: write
+  pull-requests: write
+
+jobs:
+  auto-label:
+    name: Auto Label Issues
+    runs-on: ubuntu-latest
+    if: github.event_name == 'issues' && github.event.action == 'opened'
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Auto-label based on content
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const issue = context.payload.issue;
+            const title = issue.title.toLowerCase();
+            const body = issue.body?.toLowerCase() || '';
+            const content = title + ' ' + body;
+            
+            const labels = [];
+            
+            // Bug detection
+            if (content.includes('bug') || content.includes('error') || content.includes('crash') || content.includes('broken')) {
+              labels.push('bug');
+            }
+            
+            // Feature request detection
+            if (content.includes('feature') || content.includes('request') || content.includes('enhancement') || content.includes('would be nice')) {
+              labels.push('enhancement');
+            }
+            
+            // Documentation issues
+            if (content.includes('documentation') || content.includes('docs') || content.includes('readme')) {
+              labels.push('documentation');
+            }
+            
+            // Accessibility-related
+            if (content.includes('accessibility') || content.includes('a11y') || content.includes('deaf') || content.includes('asl') || content.includes('sign language')) {
+              labels.push('accessibility');
+            }
+            
+            // Security-related
+            if (content.includes('security') || content.includes('vulnerability') || content.includes('cve')) {
+              labels.push('security');
+            }
+            
+            // MCP/Integration related
+            if (content.includes('mcp') || content.includes('n8n') || content.includes('playwright') || content.includes('integration')) {
+              labels.push('integration');
+            }
+            
+            if (labels.length > 0) {
+              await github.rest.issues.addLabels({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: issue.number,
+                labels: labels
+              });
+            }
+
+  auto-respond:
+    name: Auto Respond to Issues
+    runs-on: ubuntu-latest
+    if: github.event_name == 'issues' && github.event.action == 'opened'
+    
+    steps:
+      - name: Welcome message
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const issue = context.payload.issue;
+            const author = issue.user.login;
+            
+            const message = `👋 Hello @${author}! Thank you for opening this issue in the **360 Magicians System** repository.
+            
+            Our team follows the **Deaf First** philosophy and prioritizes accessible, inclusive solutions.
+            
+            **What happens next?**
+            - 🏷️ Your issue has been automatically labeled based on its content
+            - 👀 Our team will review your issue shortly
+            - 🤖 Automated checks may run to help diagnose the problem
+            
+            **Helpful resources:**
+            - 📖 [README](./README.md) - Project overview and setup
+            - 🔧 [MCP Integrations](./mcp-config/) - AI integration configurations
+            
+            If this is an accessibility-related issue, please include details about your specific needs so we can prioritize accordingly.
+            
+            *This is an automated message from the 360 Magicians support system.*`;
+            
+            await github.rest.issues.createComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: issue.number,
+              body: message
+            });
+
+  stale-issues:
+    name: Manage Stale Issues
+    runs-on: ubuntu-latest
+    if: github.event_name == 'workflow_dispatch'
+    
+    steps:
+      - name: Mark stale issues
+        uses: actions/stale@v9
+        with:
+          stale-issue-message: |
+            👋 This issue has been automatically marked as stale because it hasn't had recent activity.
+            
+            It will be closed in 7 days if no further activity occurs.
+            
+            If this issue is still relevant, please add a comment to keep it open.
+          stale-issue-label: 'stale'
+          days-before-stale: 30
+          days-before-close: 7
+          exempt-issue-labels: 'pinned,security,accessibility'
+
+  triage:
+    name: Issue Triage
+    runs-on: ubuntu-latest
+    if: github.event_name == 'issues' && github.event.action == 'labeled'
+    
+    steps:
+      - name: Handle priority labels
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const issue = context.payload.issue;
+            const label = context.payload.label;
+            
+            // If marked as security, add urgent flag
+            if (label.name === 'security') {
+              await github.rest.issues.addLabels({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: issue.number,
+                labels: ['priority:high']
+              });
+            }
+            
+            // If marked as accessibility, ensure visibility
+            if (label.name === 'accessibility') {
+              await github.rest.issues.addLabels({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: issue.number,
+                labels: ['deaf-first']
+              });
+            }
