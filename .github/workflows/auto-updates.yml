@@ -62,7 +62,7 @@ jobs:
 
       - name: Create Pull Request
         if: steps.check.outputs.has_updates == 'true'
-        uses: peter-evans/create-pull-request@v6
+        uses: peter-evans/create-pull-request@v8
         with:
           commit-message: 'chore: update Python dependencies'
           title: '🔄 Auto-update Python dependencies'
@@ -129,7 +129,7 @@ jobs:
 
       - name: Create Pull Request
         if: steps.check.outputs.has_updates == 'true'
-        uses: peter-evans/create-pull-request@v6
+        uses: peter-evans/create-pull-request@v8
         with:
           commit-message: 'chore: update Node.js dependencies'
           title: '🔄 Auto-update Node.js dependencies'
