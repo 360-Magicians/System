@@ -1,0 +1,25 @@
+# Dockerfile for Business Magician
+FROM python:3.11-slim
+
+WORKDIR /app
+
+# Copy shared dependencies
+COPY requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
+
+# Copy shared modules
+COPY shared/ ./shared/
+
+# Copy Business Magician
+COPY magicians/business/ ./magicians/business/
+
+# Expose port
+EXPOSE 8001
+
+# Set environment variables
+ENV PYTHONUNBUFFERED=1
+ENV MAGICIAN_TYPE=business
+ENV PORT=8001
+
+# Run the service
+CMD ["uvicorn", "magicians.business.service:app", "--host", "0.0.0.0", "--port", "8001"]

@@ -1,3 +1,1 @@
-"""
-360 Magicians System - Tests Package
-"""
+"""Init file for tests package."""

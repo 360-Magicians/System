@@ -1,0 +1,35 @@
+# Creative Project Pathway
+# This pathway handles creative content generation with ASL accessibility
+
+pathway:
+  pathway_id: "creative-content-001"
+  name: "creative-content-generation"
+  description: "Generate accessible creative content for Deaf audiences"
+  parallel: true  # Execute creative tasks in parallel
+  
+  steps:
+    - magician: "creative"
+      action: "generate-logo-concepts"
+      retry_count: 2
+      timeout: 120
+      
+    - magician: "creative"
+      action: "generate-color-palette"
+      retry_count: 2
+      timeout: 60
+      
+    - magician: "creative"
+      action: "create-brand-guidelines"
+      retry_count: 2
+      timeout: 90
+      
+    - magician: "docuhand"
+      action: "create-brand-document"
+      retry_count: 1
+      timeout: 60
+
+  initial_payload:
+    project_id: "brand-001"
+    brand_name: "DeafFirst Solutions"
+    brand_values: ["accessibility", "community", "innovation"]
+    asl_integration: true

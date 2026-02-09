@@ -1,0 +1,116 @@
+version: '3.8'
+
+services:
+  # Core Orchestrator
+  orchestrator:
+    build:
+      context: ../..
+      dockerfile: infrastructure/docker/Dockerfile.orchestrator
+    ports:
+      - "8000:8000"
+    environment:
+      - ORCHESTRATOR_HOST=0.0.0.0
+      - ORCHESTRATOR_PORT=8000
+      - LOG_LEVEL=INFO
+    networks:
+      - magician-network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  # Business Magician
+  business-magician:
+    build:
+      context: ../..
+      dockerfile: infrastructure/docker/Dockerfile.business
+    ports:
+      - "8001:8001"
+    environment:
+      - MAGICIAN_TYPE=business
+      - WEBHOOK_URL=http://business-magician:8001/webhook
+      - ORCHESTRATOR_URL=http://orchestrator:8000
+      - LOG_LEVEL=INFO
+    networks:
+      - magician-network
+    depends_on:
+      - orchestrator
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8001/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  # Job Magician (placeholder)
+  job-magician:
+    build:
+      context: ../..
+      dockerfile: infrastructure/docker/Dockerfile.business
+    ports:
+      - "8002:8001"
+    environment:
+      - MAGICIAN_TYPE=job
+      - WEBHOOK_URL=http://job-magician:8001/webhook
+      - ORCHESTRATOR_URL=http://orchestrator:8000
+      - LOG_LEVEL=INFO
+    networks:
+      - magician-network
+    depends_on:
+      - orchestrator
+
+  # Developer Magician (placeholder)
+  developer-magician:
+    build:
+      context: ../..
+      dockerfile: infrastructure/docker/Dockerfile.business
+    ports:
+      - "8003:8001"
+    environment:
+      - MAGICIAN_TYPE=developer
+      - WEBHOOK_URL=http://developer-magician:8001/webhook
+      - ORCHESTRATOR_URL=http://orchestrator:8000
+      - LOG_LEVEL=INFO
+    networks:
+      - magician-network
+    depends_on:
+      - orchestrator
+
+  # Redis for event bus
+  redis:
+    image: redis:7-alpine
+    ports:
+      - "6379:6379"
+    networks:
+      - magician-network
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # PostgreSQL for shared data
+  postgres:
+    image: postgres:15-alpine
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_USER=magician
+      - POSTGRES_PASSWORD=magician_pass
+      - POSTGRES_DB=magician_system
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    networks:
+      - magician-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U magician"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+networks:
+  magician-network:
+    driver: bridge
+
+volumes:
+  postgres-data:
