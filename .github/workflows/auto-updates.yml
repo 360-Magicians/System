@@ -1,0 +1,162 @@
+name: Auto Updates & Dependency Management
+
+on:
+  schedule:
+    - cron: '0 6 * * 1'  # Every Monday at 6 AM
+  workflow_dispatch:
+    inputs:
+      update_type:
+        description: 'Type of update to perform'
+        required: true
+        default: 'all'
+        type: choice
+        options:
+          - all
+          - security-only
+          - minor-only
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  update-python-dependencies:
+    name: Update Python Dependencies
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install pip-tools
+        run: pip install pip-tools safety
+
+      - name: Check for updates
+        id: check
+        run: |
+          if [ -f requirements.txt ]; then
+            pip install -r requirements.txt
+            pip list --outdated --format=json > outdated.json
+            if [ -s outdated.json ]; then
+              echo "has_updates=true" >> $GITHUB_OUTPUT
+            else
+              echo "has_updates=false" >> $GITHUB_OUTPUT
+            fi
+          fi
+
+      - name: Update dependencies
+        if: steps.check.outputs.has_updates == 'true'
+        run: |
+          pip install --upgrade $(pip list --outdated --format=freeze | grep -v '^\-e' | cut -d = -f 1 | xargs -r echo)
+          pip freeze > requirements.txt
+
+      - name: Security check on updates
+        if: steps.check.outputs.has_updates == 'true'
+        run: |
+          safety check -r requirements.txt || true
+
+      - name: Create Pull Request
+        if: steps.check.outputs.has_updates == 'true'
+        uses: peter-evans/create-pull-request@v6
+        with:
+          commit-message: 'chore: update Python dependencies'
+          title: '🔄 Auto-update Python dependencies'
+          body: |
+            ## Automated Dependency Update
+            
+            This PR contains automated updates for Python dependencies.
+            
+            ### Changes
+            - Updated outdated packages to their latest versions
+            - Security scan completed
+            
+            ### Verification Steps
+            - [ ] Tests pass
+            - [ ] No breaking changes detected
+            - [ ] Security scan clean
+          branch: auto-update/python-deps
+          labels: dependencies,automated
+
+  update-node-dependencies:
+    name: Update Node.js Dependencies
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Check for package.json
+        id: check-package
+        run: |
+          if [ -f package.json ]; then
+            echo "has_package=true" >> $GITHUB_OUTPUT
+          else
+            echo "has_package=false" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Install dependencies
+        if: steps.check-package.outputs.has_package == 'true'
+        run: npm ci
+
+      - name: Check for updates
+        if: steps.check-package.outputs.has_package == 'true'
+        id: check
+        run: |
+          npm outdated --json > outdated.json 2>/dev/null || true
+          if [ -s outdated.json ]; then
+            echo "has_updates=true" >> $GITHUB_OUTPUT
+          else
+            echo "has_updates=false" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Update dependencies
+        if: steps.check.outputs.has_updates == 'true'
+        run: npm update
+
+      - name: Security audit
+        if: steps.check.outputs.has_updates == 'true'
+        run: npm audit --audit-level=moderate || true
+
+      - name: Create Pull Request
+        if: steps.check.outputs.has_updates == 'true'
+        uses: peter-evans/create-pull-request@v6
+        with:
+          commit-message: 'chore: update Node.js dependencies'
+          title: '🔄 Auto-update Node.js dependencies'
+          body: |
+            ## Automated Dependency Update
+            
+            This PR contains automated updates for Node.js dependencies.
+            
+            ### Changes
+            - Updated outdated packages to their latest versions
+            - Security audit completed
+            
+            ### Verification Steps
+            - [ ] Tests pass
+            - [ ] No breaking changes detected
+            - [ ] Security audit clean
+          branch: auto-update/node-deps
+          labels: dependencies,automated
+
+  update-github-actions:
+    name: Update GitHub Actions
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Update GitHub Actions
+        uses: dependabot/fetch-metadata@v2
+        continue-on-error: true

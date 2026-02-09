@@ -1,0 +1,1 @@
+"""Developer Magician node implementation."""

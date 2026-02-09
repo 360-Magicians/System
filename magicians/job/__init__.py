@@ -1,0 +1,1 @@
+"""Job Magician node implementation."""
