@@ -5,6 +5,8 @@
 ![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)
 ![Python 3.11+](https://img.shields.io/badge/python-3.11+-blue.svg)
 ![Docker](https://img.shields.io/badge/docker-ready-blue.svg)
+[![Auto Verification & Quality Checks](https://github.com/360-Magicians/System/actions/workflows/auto-verification.yml/badge.svg)](https://github.com/360-Magicians/System/actions/workflows/auto-verification.yml)
+
 
 This project is a **unified, distributed agent system** that consolidates specialized AI agents (Magicians) into a cohesive microservices architecture. Each Magician operates as a specialized node with webhook-based communication, pathway routing, and containerized deployment options.
 
