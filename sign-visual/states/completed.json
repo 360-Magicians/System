@@ -1,0 +1,19 @@
+{
+  "state": "completed",
+  "description": "Task has been successfully completed",
+  "signSemantics": {
+    "primary": "FINISH",
+    "secondary": "SUCCESS",
+    "visual": "Hands dusting off, satisfied expression, thumbs up"
+  },
+  "transitions": [
+    "idle",
+    "listening"
+  ],
+  "requiresUser": false,
+  "visualCues": {
+    "color": "#00cc66",
+    "icon": "✅",
+    "animation": "bounce"
+  }
+}

@@ -1,0 +1,51 @@
+{
+  "version": "1.0.0",
+  "description": "Maps user intents to sign language semantics",
+  "mappings": {
+    "request_funding": {
+      "signGloss": "MONEY NEED HELP",
+      "semanticChunks": ["financial-need", "assistance-request"],
+      "confidence": 0.95
+    },
+    "validate_idea": {
+      "signGloss": "IDEA CHECK GOOD?",
+      "semanticChunks": ["concept-evaluation", "quality-check"],
+      "confidence": 0.90
+    },
+    "build_project": {
+      "signGloss": "PROJECT BUILD START",
+      "semanticChunks": ["creation", "construction-begin"],
+      "confidence": 0.92
+    },
+    "get_help": {
+      "signGloss": "HELP NEED YOU",
+      "semanticChunks": ["assistance-request", "support-needed"],
+      "confidence": 0.88
+    },
+    "check_status": {
+      "signGloss": "STATUS WHAT?",
+      "semanticChunks": ["information-request", "progress-check"],
+      "confidence": 0.85
+    },
+    "submit_feedback": {
+      "signGloss": "FEEDBACK GIVE",
+      "semanticChunks": ["communication", "opinion-share"],
+      "confidence": 0.87
+    },
+    "ask_question": {
+      "signGloss": "QUESTION ASK",
+      "semanticChunks": ["inquiry", "information-seeking"],
+      "confidence": 0.90
+    },
+    "express_concern": {
+      "signGloss": "WORRY CONCERN HAVE",
+      "semanticChunks": ["emotional-state", "issue-identification"],
+      "confidence": 0.83
+    }
+  },
+  "fallback": {
+    "signGloss": "UNDERSTAND TRY",
+    "semanticChunks": ["processing", "attempting-comprehension"],
+    "confidence": 0.60
+  }
+}

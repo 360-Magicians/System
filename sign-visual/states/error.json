@@ -1,0 +1,21 @@
+{
+  "state": "error",
+  "description": "An error has occurred that needs attention",
+  "signSemantics": {
+    "primary": "ERROR",
+    "secondary": "PROBLEM",
+    "visual": "Hands crossing in X, concerned expression, stop gesture"
+  },
+  "transitions": [
+    "idle",
+    "processing",
+    "needs_input"
+  ],
+  "requiresUser": true,
+  "visualCues": {
+    "color": "#ff4e4e",
+    "icon": "❌",
+    "animation": "shake"
+  },
+  "priority": "high"
+}
