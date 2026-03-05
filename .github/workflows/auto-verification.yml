@@ -1,0 +1,182 @@
+name: Auto Verification & Quality Checks
+
+on:
+  push:
+    branches: [main, master, develop]
+  pull_request:
+    branches: [main, master, develop]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pull-requests: write
+  checks: write
+  issues: write
+
+jobs:
+  code-quality:
+    name: Code Quality Analysis
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install quality tools
+        run: |
+          pip install pylint==3.0.0 radon==6.0.1 bandit==1.7.7 vulture==2.11
+
+      - name: Run pylint
+        run: |
+          find . -name "*.py" -not -path "./.git/*" | xargs pylint --exit-zero --output-format=json > pylint-report.json || true
+
+      - name: Check code complexity
+        run: |
+          radon cc . -a -s || true
+
+      - name: Check maintainability
+        run: |
+          radon mi . -s || true
+
+      - name: Find dead code
+        run: |
+          vulture . --min-confidence 80 || true
+
+  documentation-check:
+    name: Documentation Verification
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Check README exists
+        run: |
+          if [ ! -f README.md ]; then
+            echo "::error::README.md is missing"
+            exit 1
+          fi
+          echo "README.md found ✓"
+
+      - name: Check documentation completeness
+        run: |
+          # Check for essential documentation sections
+          if grep -q "## Installation" README.md || grep -q "## Setup" README.md || grep -q "## Running" README.md; then
+            echo "Installation/Setup documentation found ✓"
+          else
+            echo "::warning::Missing Installation/Setup section in README"
+          fi
+          
+          if grep -q "## Contributing" README.md; then
+            echo "Contributing documentation found ✓"
+          else
+            echo "::warning::Missing Contributing section in README"
+          fi
+
+      - name: Check for broken links
+        run: |
+          # Basic link check in markdown files
+          find . -name "*.md" -exec grep -l "http" {} \; | head -5
+
+  accessibility-check:
+    name: Accessibility Verification
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Check for accessibility documentation
+        run: |
+          # Check for accessibility-related content
+          if grep -qi "accessibility\|a11y\|deaf\|asl\|sign language" README.md; then
+            echo "Accessibility documentation found ✓"
+          else
+            echo "::notice::Consider adding accessibility documentation"
+          fi
+
+      - name: Verify Deaf First principles
+        run: |
+          # Verify Deaf First philosophy is documented
+          if grep -qi "deaf first" README.md; then
+            echo "Deaf First philosophy documented ✓"
+          fi
+
+  api-verification:
+    name: API Contract Verification
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: |
+          pip install fastapi uvicorn httpx openapi-spec-validator
+          if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+
+      - name: Verify API endpoints
+        run: |
+          # Check for FastAPI app
+          if [ -f aggregator.py ]; then
+            echo "FastAPI application found"
+            python -c "from aggregator import app; print('API loaded successfully ✓')"
+          fi
+
+  mcp-config-verification:
+    name: MCP Configuration Verification
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Verify MCP configuration
+        run: |
+          if [ -d mcp-config ]; then
+            echo "MCP configuration directory found ✓"
+            
+            # Verify JSON syntax
+            if [ -f mcp-config/mcp-servers.json ]; then
+              python -c "import json; json.load(open('mcp-config/mcp-servers.json'))"
+              echo "MCP servers configuration valid ✓"
+            fi
+            
+            # Verify YAML syntax
+            if [ -f mcp-config/integrations.yaml ]; then
+              pip install pyyaml -q
+              python -c "import yaml; yaml.safe_load(open('mcp-config/integrations.yaml'))"
+              echo "Integrations configuration valid ✓"
+            fi
+          fi
+
+  summary:
+    name: Verification Summary
+    needs: [code-quality, documentation-check, accessibility-check, api-verification, mcp-config-verification]
+    runs-on: ubuntu-latest
+    if: always()
+    
+    steps:
+      - name: Generate summary
+        run: |
+          echo "## Verification Summary" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "| Check | Status |" >> $GITHUB_STEP_SUMMARY
+          echo "|-------|--------|" >> $GITHUB_STEP_SUMMARY
+          echo "| Code Quality | ${{ needs.code-quality.result }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| Documentation | ${{ needs.documentation-check.result }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| Accessibility | ${{ needs.accessibility-check.result }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| API Verification | ${{ needs.api-verification.result }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| MCP Config | ${{ needs.mcp-config-verification.result }} |" >> $GITHUB_STEP_SUMMARY

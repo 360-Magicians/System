@@ -499,7 +499,7 @@ readinessProbe:
 
 For deployment issues:
 - GitHub Issues: https://github.com/360-Magicians/System/issues
-- Documentation: https://docs.360magicians.dev
+- Documentation: https://docs.360magicians.com
 - Community Slack: https://360magicians.slack.com
 
 ## Additional Resources
