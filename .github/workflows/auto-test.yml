@@ -57,7 +57,7 @@ jobs:
           if [ -f package.json ]; then npm test --if-present; fi
 
       - name: Upload coverage reports
-        uses: codecov/codecov-action@v4
+        uses: codecov/codecov-action@v5
         if: always()
         with:
           files: ./coverage.xml
