@@ -1,0 +1,57 @@
+{
+  "mcpServers": {
+    "github": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-github"
+      ],
+      "env": {
+        "GITHUB_PERSONAL_ACCESS_TOKEN": "${GITHUB_TOKEN}"
+      },
+      "description": "GitHub MCP server for repository operations, issues, PRs, and code management"
+    },
+    "n8n": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@n8n/mcp-server"
+      ],
+      "env": {
+        "N8N_API_KEY": "${N8N_API_KEY}",
+        "N8N_BASE_URL": "${N8N_BASE_URL}"
+      },
+      "description": "n8n workflow automation MCP server for AI-driven workflow orchestration"
+    },
+    "context7": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@context7/mcp-server"
+      ],
+      "env": {
+        "CONTEXT7_API_KEY": "${CONTEXT7_API_KEY}"
+      },
+      "description": "Context7 MCP server for documentation and context retrieval"
+    },
+    "playwright": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@playwright/mcp-server"
+      ],
+      "env": {
+        "PLAYWRIGHT_HEADLESS": "true"
+      },
+      "description": "Playwright MCP server for browser automation and testing"
+    },
+    "markitdown": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@markitdown/mcp-server"
+      ],
+      "description": "MarkItDown MCP server for document parsing and conversion"
+    }
+  }
+}
