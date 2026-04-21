@@ -1,0 +1,35 @@
+{
+  "version": "1.0.0",
+  "description": "Community-approved overrides for sign semantic mappings",
+  "overrides": {
+    "intent.map": {},
+    "system.map": {}
+  },
+  "versionHistory": [
+    {
+      "version": "1.0.0",
+      "date": "2024-11-01",
+      "changes": "Initial baseline",
+      "breakingChanges": false
+    }
+  ],
+  "guidelines": {
+    "breaking_change_definition": "Any change to signGloss that significantly alters meaning",
+    "versioning_policy": {
+      "major": "Breaking changes to existing mappings",
+      "minor": "New mappings added, no changes to existing",
+      "patch": "Documentation or metadata updates only"
+    },
+    "approval_requirements": {
+      "new_mappings": 2,
+      "override_existing": 3,
+      "breaking_changes": 5
+    }
+  },
+  "notes": [
+    "All overrides must be approved by Deaf community reviewers",
+    "Breaking changes require major version bump",
+    "System will use overrides when present, fall back to base mappings otherwise",
+    "Overrides are deployed separately from base system updates"
+  ]
+}

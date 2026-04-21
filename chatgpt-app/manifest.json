@@ -1,0 +1,80 @@
+{
+  "schema_version": "v1",
+  "name_for_human": "Magicians Sign Visual System",
+  "name_for_model": "magicians_sign_visual",
+  "description_for_human": "Primary sign language interface for AI agent transparency - not accessibility, but a visual reasoning layer",
+  "description_for_model": "Sign language visual system that reflects agent state, intent, and confidence in real-time. Sign is authoritative, text is optional. Used for transparent AI agent communication.",
+  "auth": {
+    "type": "none"
+  },
+  "api": {
+    "type": "openapi",
+    "url": "https://api.360magicians.dev/sign-visual/openapi.json"
+  },
+  "logo_url": "https://360magicians.dev/assets/sign-visual-logo.png",
+  "contact_email": "support@360magicians.dev",
+  "legal_info_url": "https://360magicians.dev/legal",
+  "capabilities": {
+    "sign_visual_state": {
+      "primary": true,
+      "modes": ["realtime", "async", "replay"],
+      "description": "Live visualization of agent state through sign language semantics"
+    },
+    "state_transparency": {
+      "description": "Shows what agent is doing, why it paused, what it needs",
+      "visibility": "always"
+    },
+    "semantic_chunking": {
+      "description": "No word-for-word translation - semantic intent only",
+      "approach": "gloss-based"
+    }
+  },
+  "category": "Agent Transparency",
+  "tags": [
+    "sign-language",
+    "visual-reasoning",
+    "agent-transparency",
+    "deaf-first",
+    "accessibility",
+    "multimodal"
+  ],
+  "positioning": {
+    "not": "Accessibility add-on",
+    "is": "Primary interaction primitive for visual cognition"
+  },
+  "integration": {
+    "MagicianCore": {
+      "invokes": "SignerPanel by default",
+      "emits": "state events for all actions"
+    },
+    "Validator": {
+      "switches_to": "deciding/warning states",
+      "visibility": "high"
+    },
+    "Compliance": {
+      "shows": "high-visibility caution semantics",
+      "priority": "critical"
+    },
+    "Errors": {
+      "ensures": "explicit, non-ambiguous signing",
+      "policy": "no silent fails"
+    }
+  },
+  "accessibility_contract": {
+    "sign_panel": "never hidden behind modals",
+    "user_controls": ["size", "speed", "replay"],
+    "async_first": true,
+    "realtime_optional": true
+  },
+  "definition_of_done": [
+    "Deaf user understands system state without reading text",
+    "No action happens without visible sign state",
+    "System silence is never ambiguous"
+  ],
+  "non_goals": [
+    "Not subtitles",
+    "Not decorative avatars",
+    "Not post-hoc translation"
+  ],
+  "philosophy": "If the system thinks, it signs. If it cannot sign, it should not act."
+}

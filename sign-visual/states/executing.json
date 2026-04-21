@@ -1,0 +1,20 @@
+{
+  "state": "executing",
+  "description": "Agent is actively performing actions",
+  "signSemantics": {
+    "primary": "DO",
+    "secondary": "WORK",
+    "visual": "Dynamic hand movements, active gestures, purposeful motion"
+  },
+  "transitions": [
+    "completed",
+    "error",
+    "needs_input"
+  ],
+  "requiresUser": false,
+  "visualCues": {
+    "color": "#4eff9d",
+    "icon": "⚡",
+    "animation": "flash"
+  }
+}

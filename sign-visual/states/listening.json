@@ -1,0 +1,20 @@
+{
+  "state": "listening",
+  "description": "Agent is receiving and understanding input",
+  "signSemantics": {
+    "primary": "LISTEN",
+    "secondary": "UNDERSTAND",
+    "visual": "Hand to ear, attentive posture, eyes focused"
+  },
+  "transitions": [
+    "processing",
+    "idle",
+    "error"
+  ],
+  "requiresUser": false,
+  "visualCues": {
+    "color": "#4a9eff",
+    "icon": "👂",
+    "animation": "pulse"
+  }
+}

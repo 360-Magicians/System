@@ -1,0 +1,57 @@
+{
+  "version": "1.0.0",
+  "description": "Deaf community feedback on sign language semantic mappings",
+  "governance": {
+    "approvalRequired": true,
+    "minimumReviewers": 2,
+    "reviewerPool": [
+      "deaf-community-leads",
+      "asl-linguists",
+      "deaf-ux-specialists"
+    ]
+  },
+  "feedback": [
+    {
+      "id": "fb-001",
+      "mapping": "request_funding",
+      "currentGloss": "MONEY NEED HELP",
+      "suggestedGloss": null,
+      "status": "approved",
+      "reviewedBy": ["reviewer-deaf-001"],
+      "reviewDate": "2024-11-15",
+      "comments": "Clear and culturally appropriate"
+    },
+    {
+      "id": "fb-002",
+      "mapping": "validate_idea",
+      "currentGloss": "IDEA CHECK GOOD?",
+      "suggestedGloss": "IDEA EXAMINE QUALITY?",
+      "status": "pending",
+      "submittedBy": "user-deaf-042",
+      "submittedDate": "2024-11-20",
+      "comments": "EXAMINE might be clearer than CHECK in this context"
+    }
+  ],
+  "changeLog": [
+    {
+      "version": "1.0.0",
+      "date": "2024-11-01",
+      "changes": "Initial semantic mappings approved",
+      "approvedBy": ["reviewer-deaf-001", "reviewer-deaf-002"]
+    }
+  ],
+  "submissionProcess": {
+    "steps": [
+      "Submit feedback with suggested change",
+      "Deaf reviewers evaluate accuracy and cultural appropriateness",
+      "Minimum 2 reviewers must approve",
+      "Changes are versioned and deployed"
+    ],
+    "rejectCriteria": [
+      "Not culturally appropriate",
+      "Grammatically incorrect ASL",
+      "Unclear or ambiguous meaning",
+      "Conflicts with existing mappings"
+    ]
+  }
+}

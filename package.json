@@ -1,0 +1,54 @@
+{
+  "name": "@360magicians/sign-visual-system",
+  "version": "1.0.0",
+  "description": "Sign language as a primary interaction layer for agentic systems - not translation, but state + intent visualization",
+  "type": "module",
+  "main": "sign-visual/index.ts",
+  "exports": {
+    ".": "./sign-visual/index.ts",
+    "./engine": "./sign-visual/engine/index.ts",
+    "./components": "./sign-visual/components/index.ts",
+    "./providers": "./sign-visual/providers/index.ts",
+    "./hooks": "./core/magician-core/hooks/index.ts"
+  },
+  "scripts": {
+    "demo": "node --loader ts-node/esm sign-visual/example.ts",
+    "test": "echo 'Tests would run here' && exit 0"
+  },
+  "keywords": [
+    "sign-language",
+    "ASL",
+    "deaf-first",
+    "agent-transparency",
+    "visual-reasoning",
+    "accessibility",
+    "multimodal",
+    "state-visualization"
+  ],
+  "author": "360 Magicians",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/360-Magicians/System.git"
+  },
+  "peerDependencies": {
+    "react": "^18.0.0 || ^19.0.0"
+  },
+  "devDependencies": {
+    "@types/react": "^18.0.0",
+    "typescript": "^5.0.0"
+  },
+  "files": [
+    "sign-visual/",
+    "core/magician-core/hooks/",
+    "governance/",
+    "chatgpt-app/",
+    "sign-visual-system.md",
+    "IMPLEMENTATION_PLAN.md"
+  ],
+  "philosophy": "If the system thinks, it signs. If it cannot sign, it should not act.",
+  "positioning": {
+    "not": "Accessibility add-on or subtitles",
+    "is": "Primary interaction primitive for visual cognition"
+  }
+}

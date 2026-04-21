@@ -1,0 +1,23 @@
+{
+  "state": "processing",
+  "description": "Agent is thinking and analyzing",
+  "signSemantics": {
+    "primary": "THINK",
+    "secondary": "PROCESS",
+    "visual": "Hands circling at temples, contemplative expression"
+  },
+  "transitions": [
+    "validating",
+    "deciding",
+    "executing",
+    "completed",
+    "error",
+    "needs_input"
+  ],
+  "requiresUser": false,
+  "visualCues": {
+    "color": "#9d4eff",
+    "icon": "🔄",
+    "animation": "rotate"
+  }
+}
